@@ -1,31 +1,23 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This README would documents whatever steps are necessary to get this application up and running.
 
 This is Levante.
 
-### What is this repository for? ###
+### Setting up ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Install git
+* Clone repository to your local machine from bitbucket
+* Install Python v3.*
+* Install Django
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Starting the dev server ###
 
-### Contribution guidelines ###
+Navigate to the project directory in your terminal and run the following command:
 
-* Writing tests
-* Code review
-* Other guidelines
+> python3 manage.py runserver
 
-### Who do I talk to? ###
+After that, you can access the dev server on `localhost:8000`.
 
-* Repo owner or admin
-* Other community or team contact
+### Running tests ###
