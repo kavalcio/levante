@@ -5,15 +5,26 @@
         <title>Brain Room</title>
     </head>
     <body>
+        <h2>Problem Description</h2><br>
+        <input id="problem-description" type="text" size="100">
+        <input id="problem-submit" type="button" value="Submit" onclick="submitProb()"><br>
+        <h3>Current Ideas</h3>
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send"><br>
-        <button onclick="copyFunction()">Copy link</button>
-        <input type="text" value="room invite link" id="myInput">
+        <input id="chat-message-submit" type="button" value="Send Idea"><br>
+        <input type="text" value="room code" id="myInput">
+        <button onclick="copyFunction()">Copy Room Code</button>
         {{ room_name|json_script:"room-name" }}
+        {{ user_name|json_script:"user-name" }}
         <script>
             // update room invite link
-            document.getElementById("myInput").value= window.location.href 
+            var temp = window.location.href 
+            const user = JSON.parse(document.getElementById('user-name').textContent);
+            if(user == "admin")
+                document.getElementById("myInput").value = temp.slice(temp.length-13,temp.length-7)
+            else
+                document.getElementById("myInput").value = temp.slice(temp.length-user.length-8,temp.length-user.length-2)
+            
 
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
@@ -25,28 +36,13 @@
                 + '/'
             );
 
-                
-                
-            //called when copy button is clicked to copy text to clipboard and create a popup 
-            function copyFunction() {
-
-                /* Get the text field */
-                var copyText = document.getElementById("myInput");
-
-                /* Select the text field */
-                copyText.select();
-
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-
-                /* Alert the copied text */
-                alert("Copied link: " + copyText.value);
-            }
-
-
             chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                document.querySelector('#chat-log').value += (data.message + '\n');
+                if(data.message == "no"){
+                    document.querySelector('#problem-description').value = data.problem ;
+                    return 
+                }
+                document.querySelector('#chat-log').value += ('['+data.user+']'+data.message + '\n');
             };
 
             chatSocket.onclose = function(e) {
@@ -60,14 +56,42 @@
                 }
             };
 
+            function submitProb(){
+                if(user!= "admin")
+                    return
+                const problem = document.querySelector('#problem-description').value;
+                chatSocket.send(JSON.stringify({
+                    'message': "no",
+                    'problem': problem,
+                    'user': user
+                }));
+            }
             document.querySelector('#chat-message-submit').onclick = function(e) {
                 const messageInputDom = document.querySelector('#chat-message-input');
                 const message = messageInputDom.value;
                 chatSocket.send(JSON.stringify({
-                    'message': message
+                    'message': message,
+                    'problem': 'no',
+                    'user': user
                 }));
                 messageInputDom.value = '';
             };
+                            
+                
+            //called when copy button is clicked to copy text to clipboard and create a popup 
+            function copyFunction() {
+                /* Get the text field */
+                var copyText = document.getElementById("myInput");
+
+                /* Select the text field */
+                copyText.select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                alert("Copied link: " + copyText.value);
+            }
         </script>
     </body>
 </html>

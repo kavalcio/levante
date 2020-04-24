@@ -16,11 +16,12 @@
         <script>
             document.querySelector('#create-room').onclick = function(e) {
                 var roomName = Math.random().toString(36).substring(7); //generates a random room name
-                window.location.pathname = '/rooms/' + roomName + '/';
+                window.location.pathname = '/rooms/' + roomName + '/'+"admin"+'/';
             };
             document.querySelector('#room-name-submit').onclick = function(e) {
                 var roomName = document.querySelector('#room-name-input').value;
-                window.location.pathname = '/rooms/' + roomName + '/';
+                var user = Math.floor(Math.random()*100)
+                window.location.pathname = '/rooms/' + roomName + '/'+user+'/';         
             }
         </script>
     </body>
