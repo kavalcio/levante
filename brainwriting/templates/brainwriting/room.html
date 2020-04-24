@@ -2,14 +2,19 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Chat Room</title>
+        <title>Brain Room</title>
     </head>
     <body>
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
+        <input id="chat-message-submit" type="button" value="Send"><br>
+        <button onclick="copyFunction()">Copy link</button>
+        <input type="text" value="room invite link" id="myInput">
         {{ room_name|json_script:"room-name" }}
         <script>
+            // update room invite link
+            document.getElementById("myInput").value= window.location.href 
+
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
             const chatSocket = new WebSocket(
@@ -19,6 +24,25 @@
                 + roomName
                 + '/'
             );
+
+                
+                
+            //called when copy button is clicked to copy text to clipboard and create a popup 
+            function copyFunction() {
+
+                /* Get the text field */
+                var copyText = document.getElementById("myInput");
+
+                /* Select the text field */
+                copyText.select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                alert("Copied link: " + copyText.value);
+            }
+
 
             chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
