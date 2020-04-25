@@ -17,16 +17,9 @@
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
         <script>
-            // update room invite link
-            var temp = window.location.href 
-            const user = JSON.parse(document.getElementById('user-name').textContent);
-            if(user == "admin")
-                document.getElementById("myInput").value = temp.slice(temp.length-13,temp.length-7)
-            else
-                document.getElementById("myInput").value = temp.slice(temp.length-user.length-8,temp.length-user.length-2)
-            
-
+            // update room code link
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            document.getElementById("myInput").value = roomName;
 
             const chatSocket = new WebSocket(
                 'ws://'
