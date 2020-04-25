@@ -7,7 +7,7 @@
     <body>
         <h2>Problem Description</h2><br>
         <input id="problem-description" type="text" size="100">
-        <input id="problem-submit" type="button" value="Submit" onclick="submitProb()"><br>
+        <input id="problem-submit" type="button" value="Submit" onclick="submitProb()" style="display:none;"><br>
         <h3>Current Ideas</h3>
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" size="100"><br>
@@ -17,10 +17,15 @@
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
         <script>
-            // update room code link
+            // update room code  
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             document.getElementById("myInput").value = roomName;
-
+            const user = JSON.parse(document.getElementById('user-name').textContent);
+            if (user == "admin"){
+                document.querySelector('#problem-submit').style.display = "block"
+            }else{
+                document.querySelector('#problem-submit').style.display = "none"
+            }
             const chatSocket = new WebSocket(
                 'ws://'
                 + window.location.host
