@@ -50,3 +50,7 @@ def add_response(request):
     responseObj.save()
 
     return HttpResponse(request.session)
+
+def get_response(request):
+    response = Response.objects.order_by('?').first()
+    return HttpResponse(response)
