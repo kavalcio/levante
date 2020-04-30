@@ -7,6 +7,7 @@
     <body>
         <textarea id="random-idea" cols="100" rows="20"></textarea><br>
         <button onclick="getIdea()">Get Random Idea</button><br>
+        <button onclick="nextPage()">Next Page</button><br>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             function getIdea() {
@@ -17,6 +18,9 @@
                         document.getElementById("random-idea").value = response;
                     },
                 });
+            }
+            function nextPage(){
+                window.location.pathname = window.location.pathname.split("inspiration")[0] + 'nominate/';
             }
         </script>
     </body>

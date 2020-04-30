@@ -13,7 +13,7 @@
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Send Idea"><br>
         <input type="text" value="room code" id="myInput">
-        <button onclick="copyFunction()">Copy Room Code</button><br>
+        <button onclick="copyFunction()">Copy Room Code</button>
         <button onclick="nextPage()">Next Page</button>
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
@@ -100,6 +100,10 @@
                 }));
                 messageInputDom.value = '';
             };
+            function nextPage(){
+                window.location.pathname = '/rooms/' + roomName + '/'+user+'/nominate';
+            }
+             
                             
                 
             //called when copy button is clicked to copy text to clipboard and create a popup 

@@ -7,6 +7,8 @@ urlpatterns = [
     path('add_response/', views.add_response, name='add_response'),
     path('get_response/', views.get_response, name='get_response'),
     path('add_question/', views.add_question, name='add_question'),
+    path('upd_response/', views.upd_response, name='upd_response'),
     path('<str:room_name>/<str:user_name>/', views.room, name='room'),
     path('<str:room_name>/<str:user_name>/inspiration/', views.inspiration, name='inspiration'),
+    path('<str:room_name>/<str:user_name>/nominate/', views.nominate, name='room'),
 ]
