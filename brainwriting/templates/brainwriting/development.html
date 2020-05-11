@@ -13,32 +13,23 @@
         <button onclick="submitComment()">Submit</button>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            let currentIdea = null;
-
-            // Populate textarea with idea
-            $.ajax({
-                type: 'GET',
-                url: '/get_response/',
-                success: function(response) {
-                    currentIdea = response;
-                    document.getElementById("current-idea").value = response;
-                },
-            });
-
             function loadNextIdea() {
                 $.ajax({
                     type: 'GET',
-                    url: '/get_response/',
-                    success: function(response) {
-                        currentIdea = response;
-                        document.getElementById("current-idea").value = response;
+                    url: '/get_response_and_comments/',
+                    success: function(result) {
+                        const resultObj = JSON.parse(result);
+                        currentIdea = resultObj.response;
+                        document.getElementById("current-idea").value = currentIdea;
+                        for (index in resultObj.comments) {
+                            document.getElementById("current-idea").value += '\n' + resultObj.comments[index];
+                        }
                     },
                 });
             }
-
             function submitComment() {
                 comment = document.getElementById("comment-text-input").value;
-                document.getElementById("current-idea").value += comment + '\n';
+                document.getElementById("current-idea").value += '\n' + comment;
 
                 $.ajax({
                     type: 'POST',
@@ -52,6 +43,10 @@
                     },
                 });
             }
+
+            let currentIdea = null;
+
+            loadNextIdea();
 
         </script>
     </body>

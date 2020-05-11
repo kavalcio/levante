@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
 from .models import Question, Response, Comment
+import json
 
 # Create your views here.
 
@@ -78,13 +79,32 @@ def add_response(request):
 
 #only sends back an idea that has not been nominated yet
 def get_response(request):
-    response = Response.objects.filter()
+    responses = Response.objects.filter()
     # if(Response.objects.all().count()==0):
     #     return HttpResponse("#-----objects not found-------#")
     # #sends code if all ideas have been nominated
     # if(not response):
     #     return HttpResponse("NULL869")
-    return HttpResponse(response.order_by('?').first())
+    return HttpResponse(responses.order_by('?').first())
+
+def get_response_and_comments(request):
+    if not request.is_ajax() or not request.method=='GET':
+        return HttpResponseNotAllowed(['GET'])
+
+    responses = Response.objects.filter()
+
+    response = responses.order_by('?').first()
+    comments = Comment.objects.filter(response=response)
+
+    obj = {
+        "response": response.response_text,
+        "comments": []
+    }
+
+    for comment in comments:
+        obj['comments'].append(comment.comment_text)
+
+    return HttpResponse(json.dumps(obj))
 
 def add_comment(request):
     if not request.is_ajax() or not request.method=='POST':
