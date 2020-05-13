@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
-from .models import Question, Response, Comment
+from .models import Room, Question, Response, Comment
+from django.utils.crypto import get_random_string
+import string
 
 # Create your views here.
 
@@ -103,3 +105,31 @@ def add_comment(request):
     commentObj.save()
 
     return HttpResponse()
+
+def create_room(request):
+    roomKey = get_random_string(length = 5, allowed_chars = (string.ascii_uppercase + string.digits))
+    keyExists = Room.objects.filter(room_key=roomKey, active=True).exists()
+
+    while (keyExists):
+        roomKey = get_random_string(length = 5, allowed_chars = (string.ascii_uppercase + string.digits))
+        keyExists = Room.objects.filter(room_key=roomKey, active=True).exists()
+
+    roomObj = Room(
+        room_key=roomKey,
+        active=True,
+    )
+
+    roomObj.save()
+
+    return HttpResponse(roomKey)
+
+def join_room(request):
+    roomKey = request.POST['roomKey']
+    roomExists = Room.objects.filter(room_key=roomKey, active=True).exists()
+
+    if (roomExists):
+        roomExists = 1
+    else:
+        roomExists = 0
+
+    return HttpResponse(roomExists)

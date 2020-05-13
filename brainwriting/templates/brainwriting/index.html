@@ -12,16 +12,44 @@
         <input id="room-name-submit" type="button" value="Join"><br>
         Would you like to create a new room?
         <input id="create-room" type="button" value="Create">
-
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            document.querySelector('#create-room').onclick = function(e) {
-                var roomName = Math.random().toString(36).substring(7); //generates a random room name
-                window.location.pathname = '/rooms/' + roomName + '/'+"admin"+'/';
+            function createRoom() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/create_room/',
+                    success: function(response) {
+                        const roomKey =  response;
+                        window.location.pathname = '/rooms/' + roomKey + '/'+"admin"+'/';
+                    },
+                });
+            }
+            function joinRoom(roomKey) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/join_room/',
+                    data: {
+                        roomKey: roomKey,
+                    },
+                    success: function(response) {
+                        const roomExists =  response;
+                        if (roomExists == 1) {
+                            var user = Math.floor(Math.random()*100)
+                            window.location.pathname = '/rooms/' + roomKey + '/'+user+'/';
+                        } else {
+                            alert('room not found');
+                        }
+                    },
+                });
+            }
+
+            document.querySelector('#create-room').onclick = async function(e) {
+                createRoom();
             };
             document.querySelector('#room-name-submit').onclick = function(e) {
+                // Check if room exists
                 var roomName = document.querySelector('#room-name-input').value;
-                var user = Math.floor(Math.random()*100)
-                window.location.pathname = '/rooms/' + roomName + '/'+user+'/';         
+                joinRoom(roomName);        
             }
         </script>
     </body>
