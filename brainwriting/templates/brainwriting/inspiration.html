@@ -14,7 +14,7 @@
             function getIdea() {
                 $.ajax({
                     type: 'GET',
-                    url: '/get_response/',
+                    url: '/get_response/inspiration',
                     success: function(response) {
                         document.getElementById("random-idea").value = response;
                     },
