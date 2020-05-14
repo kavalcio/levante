@@ -20,10 +20,32 @@
                     success: function(result) {
                         const resultObj = JSON.parse(result);
                         currentIdea = resultObj.response;
-                        document.getElementById("current-idea").value = currentIdea;
-                        for (index in resultObj.comments) {
-                            document.getElementById("current-idea").value += '\n' + resultObj.comments[index];
+
+                        if(response == "NULL869" || response == "none") {
+                            window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
+                        } else {
+                            document.getElementById("current-idea").value = currentIdea;
+                            for (index in resultObj.comments) {
+                                document.getElementById("current-idea").value += '\n' + resultObj.comments[index];
+                            }
                         }
+                    },
+                });
+                if(firstRun == false) {
+                    ideaDeveloped();
+                }
+            }
+            function ideaDeveloped(){
+                const idea = document.querySelector('#current-idea').value;
+                $.ajax({
+                    type: 'POST',
+                    url: '/upd_response/',
+                    data: {
+                        response: idea,
+                        developed: "yes"
+                    },
+                    success: function(response) {
+                        alert(response);
                     },
                 });
             }
@@ -45,9 +67,7 @@
             }
 
             let currentIdea = null;
-
-            loadNextIdea();
-
+            loadNextIdea(true);
         </script>
     </body>
 </html>

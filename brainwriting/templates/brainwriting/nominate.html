@@ -6,7 +6,7 @@
     </head>
     <body>
         <h2>Nominate Ideas!</h2><br>
-        <button onclick="loadNextIdea()">Don't Nominate</button>
+        <button onclick="dontNominateIdea()">Don't Nominate</button>
         <textarea id="current-idea" cols="100" rows="20"></textarea>
         <button onclick="nominateIdea()">Nominate</button><br>
         {{ user_name|json_script:"user-name" }}
@@ -14,27 +14,19 @@
         <script>
             const user = JSON.parse(document.getElementById('user-name').textContent);
 
-            //load the first idea from the database
-            $.ajax({
-                    type: 'GET',
-                    url: '/get_response/',
-                    success: function(response) {
-                        document.getElementById("current-idea").value = response;
-                        //forward to voting if all ideas have been nominated
-                        if(response == "NULL869")
-                            window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
-                    },
-                });
+            loadNextIdea()
             //loads the next idea from the db and navigates to the next page if no more ideas are available
             function loadNextIdea(){
                 $.ajax({
                     type: 'GET',
-                    url: '/get_response/',
+                    url: '/get_response/nominate',
                     success: function(response) {
-                        document.getElementById("current-idea").value = response;
+                        
                         //forward to voting if all ideas have been nominated                        
-                        if(response == "NULL869")
+                        if(response == "NULL869" || response == "none")
                             window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+                        else
+                            document.getElementById("current-idea").value = response;
                     },
                 });
             }
@@ -47,6 +39,23 @@
                         data: {
                             response: idea,
                             nomination: "yes"
+                        },
+                        success: function(response) {
+                            alert(response);
+                        },
+                    });
+                loadNextIdea()
+            }
+
+            //updates the nomination parameter of the response and loads the next idea
+            function dontNominateIdea(){
+                const idea = document.querySelector('#current-idea').value;
+                    $.ajax({
+                        type: 'POST',
+                        url: '/upd_response/',
+                        data: {
+                            response: idea,
+                            nomination: "no"
                         },
                         success: function(response) {
                             alert(response);
