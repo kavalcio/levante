@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
-from .models import Room, Question, Response, Comment
 from django.utils.crypto import get_random_string
+from .models import Room, Question, Response, Comment
 import string
+import json
 
 # Create your views here.
 
@@ -117,6 +118,25 @@ def add_response(request):
     responseObj.save()
 
     return HttpResponse(request.session)
+
+def get_response_and_comments(request):
+    if not request.is_ajax() or not request.method=='GET':
+        return HttpResponseNotAllowed(['GET'])
+
+    responses = Response.objects.filter()
+
+    response = responses.order_by('?').first()
+    comments = Comment.objects.filter(response=response)
+
+    obj = {
+        "response": response.response_text,
+        "comments": []
+    }
+
+    for comment in comments:
+        obj['comments'].append(comment.comment_text)
+
+    return HttpResponse(json.dumps(obj))
 
 def get_response(request, page):
     #if request is from the nominate page only returns an idea that has not been nominated yet

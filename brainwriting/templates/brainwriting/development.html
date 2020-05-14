@@ -13,30 +13,45 @@
         <button onclick="submitComment()">Submit</button>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            let currentIdea = null;
+            function loadNextIdea(firstRun) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_response_and_comments/',
+                    success: function(result) {
+                        const resultObj = JSON.parse(result);
+                        currentIdea = resultObj.response;
 
-            // Populate textarea with idea
-            loadNextIdea(true)
-
-            function loadNextIdea(firstRun = false) {
-                 $.ajax({
-                        type: 'GET',
-                        url: '/get_response/development',
-                        success: function(response) {
-                            currentIdea = response;
-                            if(response == "NULL869" || response == "none")
-                                window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
-                            else
-                                document.getElementById("current-idea").value = response;
-                        },
-                    });
-                if(firstRun == false)
-                  ideaDeveloped()
+                        if(result == "NULL869" || result == "none") {
+                            window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
+                        } else {
+                            document.getElementById("current-idea").value = currentIdea;
+                            for (index in resultObj.comments) {
+                                document.getElementById("current-idea").value += '\n' + resultObj.comments[index];
+                            }
+                        }
+                    },
+                });
+                if(firstRun == false) {
+                    ideaDeveloped();
+                }
             }
-
+            function ideaDeveloped(){
+                const idea = document.querySelector('#current-idea').value;
+                $.ajax({
+                    type: 'POST',
+                    url: '/upd_response/',
+                    data: {
+                        response: idea,
+                        developed: "yes"
+                    },
+                    success: function(response) {
+                        alert(response);
+                    },
+                });
+            }
             function submitComment() {
                 comment = document.getElementById("comment-text-input").value;
-                document.getElementById("current-idea").value += comment + '\n';
+                document.getElementById("current-idea").value += '\n' + comment;
 
                 $.ajax({
                     type: 'POST',
@@ -51,21 +66,8 @@
                 });
             }
 
-        function ideaDeveloped(){
-            const idea = document.querySelector('#current-idea').value;
-            $.ajax({
-                    type: 'POST',
-                    url: '/upd_response/',
-                    data: {
-                        response: idea,
-                        developed: "yes"
-                    },
-                    success: function(response) {
-                        alert(response);
-                    },
-                });
-        }
-
+            let currentIdea = null;
+            loadNextIdea(true);
         </script>
     </body>
 </html>
