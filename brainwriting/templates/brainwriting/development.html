@@ -16,24 +16,22 @@
             let currentIdea = null;
 
             // Populate textarea with idea
-            $.ajax({
-                type: 'GET',
-                url: '/get_response/',
-                success: function(response) {
-                    currentIdea = response;
-                    document.getElementById("current-idea").value = response;
-                },
-            });
+            loadNextIdea(true)
 
-            function loadNextIdea() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/get_response/',
-                    success: function(response) {
-                        currentIdea = response;
-                        document.getElementById("current-idea").value = response;
-                    },
-                });
+            function loadNextIdea(firstRun = false) {
+                 $.ajax({
+                        type: 'GET',
+                        url: '/get_response/development',
+                        success: function(response) {
+                            currentIdea = response;
+                            if(response == "NULL869" || response == "none")
+                                window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
+                            else
+                                document.getElementById("current-idea").value = response;
+                        },
+                    });
+                if(firstRun == false)
+                  ideaDeveloped()
             }
 
             function submitComment() {
@@ -52,6 +50,21 @@
                     },
                 });
             }
+
+        function ideaDeveloped(){
+            const idea = document.querySelector('#current-idea').value;
+            $.ajax({
+                    type: 'POST',
+                    url: '/upd_response/',
+                    data: {
+                        response: idea,
+                        developed: "yes"
+                    },
+                    success: function(response) {
+                        alert(response);
+                    },
+                });
+        }
 
         </script>
     </body>
