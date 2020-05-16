@@ -7,27 +7,29 @@
     <body>
         <h2>Problem Description</h2><br>
         <input id="problem-description" type="text" size="100">
-        <input id="problem-submit" type="button" value="Submit" onclick="submitProb()" style="display:none;"><br>
         <h3>Current Ideas</h3>
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Send Idea"><br>
-        <input type="text" value="room code" id="myInput">
-        <button onclick="copyFunction()">Copy Room Code</button>
         <button onclick="nextPage()">Next Page</button>
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            // update room code  
+
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
-            document.getElementById("myInput").value = roomName;
             const user = JSON.parse(document.getElementById('user-name').textContent);
-            if (user == "admin"){
-                document.querySelector('#problem-submit').style.display = "block"
-            }else{
-                document.querySelector('#problem-submit').style.display = "none"
-            }
+
+           //Get problem description
+           $.ajax({
+                        type: 'GET',
+                        url: '/get_question/',
+                        success: function(response) {
+                            document.querySelector('#problem-description').value = response;
+                        },
+                    });
+
+
             const chatSocket = new WebSocket(
                 'ws://'
                 + window.location.host
@@ -38,21 +40,7 @@
 
             chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                if(data.message == null){
-                    document.querySelector('#problem-description').value = data.problem ;
-                    $.ajax({
-                        type: 'POST',
-                        url: '/add_question/',
-                        data: {
-                            problem: data.problem,
-                        },
-                        success: function(response) {
-                            alert(response);
-                        },
-                    });
-                    return
-                }
-                if(data.user == user || user == "admin")
+                if(data.user == user)
                     document.querySelector('#chat-log').value += ('['+data.user+']'+data.message + '\n');
                     const problem = document.querySelector('#problem-description').value;
                     // console.log(request.session);
@@ -80,16 +68,6 @@
                 }
             };
 
-            function submitProb(){
-                if(user!= "admin")
-                    return
-                const problem = document.querySelector('#problem-description').value;
-                chatSocket.send(JSON.stringify({
-                    'message': null,
-                    'problem': problem,
-                    'user': user
-                }));
-            }
             document.querySelector('#chat-message-submit').onclick = function(e) {
                 const messageInputDom = document.querySelector('#chat-message-input');
                 const message = messageInputDom.value;
@@ -106,20 +84,7 @@
              
                             
                 
-            //called when copy button is clicked to copy text to clipboard and create a popup 
-            function copyFunction() {
-                /* Get the text field */
-                var copyText = document.getElementById("myInput");
 
-                /* Select the text field */
-                copyText.select();
-
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-
-                /* Alert the copied text */
-                alert("Copied link: " + copyText.value);
-            }
 
             function nextPage(){
                 window.location.pathname = window.location.pathname + 'inspiration/';

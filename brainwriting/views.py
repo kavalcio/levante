@@ -11,6 +11,16 @@ import json
 def index(request):
     return render(request, 'brainwriting/index.html')
 
+def roomCreate(request, room_name):
+    return render(request, 'brainwriting/roomCreate.html', {
+        'room_name': room_name
+    })
+
+def roomCode(request, room_name):
+    return render(request, 'brainwriting/roomCode.html', {
+        'room_name': room_name
+    })
+
 def room(request, room_name, user_name):
     return render(request, 'brainwriting/room.html', {
         'room_name': room_name,
@@ -43,6 +53,11 @@ def voting(request, room_name, user_name):
 
 
 # HTTP endpoints #
+
+def get_question(request):
+    response = Question.objects.filter()
+
+    return HttpResponse(response.order_by('?').first())
 
 def add_question(request):
     if not request.is_ajax() or not request.method=='POST':
