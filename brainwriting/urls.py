@@ -14,11 +14,11 @@ urlpatterns = [
     path('create_room/', views.create_room, name='create_room'),
     path('join_room/', views.join_room, name='join_room'),
 
-    path('<str:room_name>/admin/', views.roomCreate, name='roomCreate'),
+    path('<str:room_name>/admin/create', views.roomCreate, name='roomCreate'),
     path('<str:room_name>/admin/code', views.roomCode, name='roomCode'),
-    path('<str:room_name>/<str:user_name>/<str:room_num>', views.room, name='room'),
     path('<str:room_name>/<str:user_name>/inspiration/', views.inspiration, name='inspiration'),
     path('<str:room_name>/<str:user_name>/nominate/', views.nominate, name='nominate'),
     path('<str:room_name>/<str:user_name>/development/', views.development, name='development'),
     path('<str:room_name>/<str:user_name>/voting/', views.voting, name='voting'),
+    path('<str:room_name>/<str:user_name>/<str:room_num>/', views.room, name='room'),
 ]

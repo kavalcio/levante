@@ -23,7 +23,7 @@
                     success: function(response) {
                         
                         //forward to voting if all ideas have been nominated                        
-                        if(response == "NULL869" || response == "none")
+                        if(response == "NULL869" || response == "None")
                             window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
                         else
                             document.getElementById("current-idea").value = response;
