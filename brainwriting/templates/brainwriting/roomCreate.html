@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Home Page - levanté!</title>
+    </head>
+    <body>
+        <h1>levanté!</h1>
+        <input id="problem-description" type="text" size="100" rows="20" value = "Type your brainstorming question here i.e. How might we?..." onclick=clearText()> <br>
+        <button onclick="setupRoom()">Press Enter to Create Room</button>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script>
+            //simply clears the text for the Key to be entered
+            function clearText(){
+                document.querySelector('#problem-description').value = ""
+            }
+            function setupRoom(){
+                
+                problem = document.querySelector('#problem-description').value      
+                $.ajax({
+                            type: 'POST',
+                            url: '/add_question/',
+                            data: {
+                                problem: problem,
+                            },
+                            success: function(response) {
+                                alert(response);
+                            },
+                        });
+                window.location.pathname = window.location.pathname + "code"
+            }
+            document.querySelector('#problem-description').onkeyup = function(e) {
+                if (e.keyCode === 13) {  // enter, return
+                    setupRoom()
+                }
+            };
+        </script>
+    </body>
+</html>
+
+

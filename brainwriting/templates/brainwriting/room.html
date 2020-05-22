@@ -14,7 +14,7 @@
         {{ room_num|json_script:"room-num" }}
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            // update room code  
+
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             const roomNum = JSON.parse(document.getElementById('room-num').textContent);
             document.getElementById("myInput").value = roomName;
