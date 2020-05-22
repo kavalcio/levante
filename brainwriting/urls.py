@@ -13,7 +13,7 @@ urlpatterns = [
     path('create_room/', views.create_room, name='create_room'),
     path('join_room/', views.join_room, name='join_room'),
 
-    path('<str:room_name>/<str:user_name>/', views.room, name='room'),
+    path('<str:room_name>/<str:user_name>/<str:room_num>', views.room, name='room'),
     path('<str:room_name>/<str:user_name>/inspiration/', views.inspiration, name='inspiration'),
     path('<str:room_name>/<str:user_name>/nominate/', views.nominate, name='nominate'),
     path('<str:room_name>/<str:user_name>/development/', views.development, name='development'),

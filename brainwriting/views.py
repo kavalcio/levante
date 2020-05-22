@@ -11,10 +11,11 @@ import json
 def index(request):
     return render(request, 'brainwriting/index.html')
 
-def room(request, room_name, user_name):
+def room(request, room_name, user_name, room_num):
     return render(request, 'brainwriting/room.html', {
         'room_name': room_name,
-        'user_name': user_name
+        'user_name': user_name,
+        'room_num': room_num
     })
 
 def inspiration(request, room_name, user_name):
