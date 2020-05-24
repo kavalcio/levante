@@ -7,7 +7,7 @@
     <body>
         <input id="problem-description" type="text" size="100"><br>
         <input id="message-input" type="text" size="100" value = "Type your ideas here!" onclick='clearText()'><br>
-        <input id="message-submit" type="button" value="Press Enter to Save"><br>
+        <input id="message-submit" type="button" value="Press Enter to Submit"><br>
         <div>You have <span id="time">30</span> seconds!</div>
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
@@ -83,7 +83,7 @@
 
             window.onload = function () {
                     display = document.querySelector('#time');
-                startTimer(10, display);
+                startTimer(30, display); //switch to 120 seconds
             };
         </script>
     </body>
