@@ -27,9 +27,8 @@ class Question(models.Model):
 class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     response_text = models.CharField(max_length=200)
-    nominations = models.IntegerField(default=0)
-    developed = models.IntegerField(default=0)
-    voted = models.IntegerField(default=0)
+    check = models.IntegerField(default=0)
+    voteNum = models.IntegerField(default=0)
     def __str__(self):
         return self.response_text
 

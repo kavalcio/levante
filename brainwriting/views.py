@@ -51,6 +51,11 @@ def voting(request, room_name, user_name):
         'room_name': room_name,
         'user_name': user_name
     })
+def end(request, room_name, user_name):
+    return render(request, 'brainwriting/end.html', {
+        'room_name': room_name,
+        'user_name': user_name
+    })
 
 
 # HTTP endpoints #
@@ -78,44 +83,35 @@ def upd_response(request):
         return HttpResponseNotAllowed(['POST'])
     
     #Ensuring the expected variables are in the POST request
-    if "nomination" in request.POST:  
-        nomination = request.POST['nomination']
+    if "check" in request.POST:  
+        check = request.POST['check']
     else:
-        nomination = "none"
-    if "response" in request.POST:
-        responseToUp = request.POST['response']
-    else: 
-        responseToUp = "none"
-    if "developed" in request.POST:
-        developed = request.POST['developed']
-    else:
-        developed = "none"
-    if "voted" in request.POST:
-        voted = request.POST['voted']
-    else:
-        voted = "none"    
+        check = "none"
+    responseToUp = request.POST['response']
 
-    if(developed == "yes"):
+    if(check == "yes" or check == "nominate" or check == "vote"):
         temp = Response.objects.get(response_text=responseToUp)
-        temp.developed = 2 
+        if(check == "nominate"):
+            temp.voteNum = 1
+        if(check == "vote"):
+            temp.voteNum = temp.voteNum + 1
+        temp.check = 1 
         temp.save()
-    if(voted == "yes"):
+    elif(check == "no"):
         temp = Response.objects.get(response_text=responseToUp)
-        temp.voted = 1 
-        temp.save()
-    elif(voted == "no"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.voted = 2
+        temp.check = 2
         temp.save()       
-    if(nomination == "yes"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.nominations = 1 
-        temp.save()
-    elif(nomination == "no"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.nominations = 2 
-        temp.save()
     
+    return HttpResponse(request.session)
+
+def reset_responses(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    for temp in Response.objects.all():
+        temp.check = 0
+        temp.save()  
+
     return HttpResponse(request.session)
 
 def add_response(request):
@@ -128,7 +124,6 @@ def add_response(request):
     responseObj = Response(
         question=questionObj,
         response_text=request.POST['message'],
-        nominations=0
     )
 
     responseObj.save()
@@ -139,13 +134,15 @@ def get_response_and_comments(request):
     if not request.is_ajax() or not request.method=='GET':
         return HttpResponseNotAllowed(['GET'])
 
-    responses = Response.objects.filter()
+    responses = Response.objects.filter(check = 0)
+    if(not responses):
+           return HttpResponse("NULL869")
 
     response = responses.order_by('?').first()
     comments = Comment.objects.filter(response=response)
 
     obj = {
-        "response": response.response_text,
+        "response": response,
         "comments": []
     }
 
@@ -156,19 +153,28 @@ def get_response_and_comments(request):
 
 def get_response(request, page):
     #if request is from the nominate page only returns an idea that has not been nominated yet
-    if(page == "nominate"):
-         response = Response.objects.filter(nominations = 0)
+    if(page == "nominate" or page == "development"):
+         response = Response.objects.filter(check = 0)
          #sends error code if all ideas have been nominated
          if(not response):
            return HttpResponse("NULL869")
-    elif(page == "development"):
-        response = Response.objects.filter(developed = 0)
-        if(not response):
-           return HttpResponse("NULL869")
     elif(page == "voting"):
-        response = Response.objects.filter(voted = 0)
-        if(not response):
-           return HttpResponse("NULL869")       
+        response = Response.objects.filter(voteNum = 1)
+        temp = response.order_by('?').first()
+        #sends error code if all ideas have been nominated
+        if(not response or temp.check != 0):
+           return HttpResponse("NULL869")
+    elif(page == "end"):
+        response = Response.objects.exclude(voteNum = 0)
+        print(response)
+        temp2 = response.order_by('-voteNum')
+        temp = response.order_by('-voteNum').first()
+        print(temp2)
+        print(temp.check)
+        #sends error code if all ideas have been nominated
+        if(not response or temp.check != 0):
+           return HttpResponse("NULL869")
+        return HttpResponse(temp2)
     else:
         response = Response.objects.filter()
 
@@ -182,7 +188,7 @@ def add_comment(request):
     comment = request.POST['comment']
 
     responseObj = Response.objects.get(response_text=idea)
-    responseObj.developed = 1 
+    responseObj.check = 1 
     responseObj.save()
 
     commentObj = Comment(

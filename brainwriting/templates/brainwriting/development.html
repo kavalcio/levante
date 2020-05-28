@@ -22,6 +22,14 @@
                         currentIdea = resultObj.response;
 
                         if(result == "NULL869" || result == "none") {
+                            //Reset checks on all objects
+                            $.ajax({
+                                        type: 'POST',
+                                        url: '/reset_responses/',
+                                        success: function(response) {
+                                            alert(response);
+                                        },
+                            });
                             window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
                         } else {
                             document.getElementById("current-idea").value = currentIdea;
@@ -42,7 +50,7 @@
                     url: '/upd_response/',
                     data: {
                         response: idea,
-                        developed: "yes"
+                        check: "yes"
                     },
                     success: function(response) {
                         alert(response);
