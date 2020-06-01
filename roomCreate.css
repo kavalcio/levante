@@ -1,0 +1,58 @@
+html,body {
+    font-family: helvetica;
+    margin: 0;
+    height: 100%;
+    background-color: #073b4c;
+    overflow: hidden;
+}
+
+
+#main-container{
+    width: 92.5%;
+    height: 100%;
+    display: block;
+    margin: auto;
+
+ 
+}
+
+#problem-description{
+    background-color: #ef476f;
+    width: 90%;
+    height: 300px;
+    margin: 0px;
+    text-align: center;
+    font-size: xx-large;
+    position: absolute;
+    border: solid 15px #06d6a0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+#button-container{
+    width:50%;
+    text-align: center;
+    margin-left:25%;
+    position: absolute;
+    top: 90%;
+    -ms-transform: translateY(-80%);
+    transform: translateY(-80%);
+}
+#create-room{
+    font-size: x-large;
+    background-color: #06d6a0;
+    width: 70%;
+    height: 70px;
+    border-radius: 100px;
+}
+#levante-text{
+    font-style: italic;
+    font-size: 500%;
+    background: -webkit-linear-gradient(#118ab2, #073b4c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 5%;
+    text-align: center;
+
+}
