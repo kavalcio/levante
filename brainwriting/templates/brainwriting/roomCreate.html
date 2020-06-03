@@ -15,18 +15,18 @@
                 document.querySelector('#problem-description').value = ""
             }
             function setupRoom(){
-                
                 problem = document.querySelector('#problem-description').value      
                 $.ajax({
-                            type: 'POST',
-                            url: '/add_question/',
-                            data: {
-                                problem: problem,
-                            },
-                            success: function(response) {
-                                alert(response);
-                            },
-                        });
+                    type: 'POST',
+                    url: '/add_question/',
+                    data: {
+                        problem: problem,
+                        room_id: localStorage.getItem('roomId')
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                });
                 window.location.pathname = window.location.pathname.split("create")[0] + "code"
             }
             document.querySelector('#problem-description').onkeyup = function(e) {

@@ -21,7 +21,9 @@
                     type: 'POST',
                     url: '/create_room/',
                     success: function(response) {
-                        const roomKey =  response;
+                        response = JSON.parse(response);
+                        const roomKey =  response[0].fields.room_key;
+                        localStorage.setItem('roomId', response[0].pk);
                         window.location.pathname = '/rooms/' + roomKey + '/admin/create';
                     },
                 });

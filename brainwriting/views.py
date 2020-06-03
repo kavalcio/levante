@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
 from django.utils.crypto import get_random_string
 from .models import Room, Question, Response, Comment
+from django.core import serializers
 import string
 import json
 
@@ -56,17 +57,21 @@ def voting(request, room_name, user_name):
 # HTTP endpoints #
 
 def get_question(request):
-    response = Question.objects.filter()
+    roomObj = Room.objects.get(room_id = request.GET['room_id'])
+    questionObj = Question.objects.get(room = roomObj)
 
-    return HttpResponse(response.order_by('?').first())
+    return HttpResponse(questionObj)
 
 def add_question(request):
     if not request.is_ajax() or not request.method=='POST':
         return HttpResponseNotAllowed(['POST'])
 
+    roomObj = Room.objects.get(room_id = request.POST['room_id'])
+
     questionObject = Question(
-        question_text=request.POST['problem'],
-        pub_date='2000-11-11'
+        room = roomObj,
+        question_text = request.POST['problem'],
+        pub_date = '2000-11-11'
     )
 
     questionObject.save()
@@ -122,11 +127,10 @@ def add_response(request):
     if not request.is_ajax() or not request.method=='POST':
         return HttpResponseNotAllowed(['POST'])
 
-    questionName = request.POST['problem']
-    questionObj = Question.objects.get(question_text=questionName)
+    roomObj = Room.objects.get(room_id = request.POST['room_id'])
 
     responseObj = Response(
-        question=questionObj,
+        room=roomObj,
         response_text=request.POST['message'],
         nominations=0
     )
@@ -209,7 +213,9 @@ def create_room(request):
 
     roomObj.save()
 
-    return HttpResponse(roomKey)
+    serialized_object = serializers.serialize('json', [roomObj])
+
+    return HttpResponse(serialized_object)
 
 def join_room(request):
     roomKey = request.POST['roomKey']
