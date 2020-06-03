@@ -12,6 +12,7 @@
         <input id="create-room" type="button" value="Create New Room">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
+            var token = '{{csrf_token}}';
             //simply clears the text for the Key to be entered
             function clearText(){
                 document.querySelector('#room-name-input').value = ""
@@ -19,6 +20,7 @@
             function createRoom() {
                 $.ajax({
                     type: 'POST',
+                    headers: { "X-CSRFToken": token },
                     url: '/create_room/',
                     success: function(response) {
                         const roomKey =  response;
@@ -29,6 +31,7 @@
             function joinRoom(roomKey) {
                 $.ajax({
                     type: 'POST',
+                    headers: { "X-CSRFToken": token },
                     url: '/join_room/',
                     data: {
                         roomKey: roomKey,
