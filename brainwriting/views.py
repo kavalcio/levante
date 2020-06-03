@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
+from django.core import serializers
 from django.utils.crypto import get_random_string
 from .models import Room, Question, Response, Comment
 import string
@@ -166,15 +167,13 @@ def get_response(request, page):
            return HttpResponse("NULL869")
     elif(page == "end"):
         response = Response.objects.exclude(voteNum = 0)
-        print(response)
-        temp2 = response.order_by('-voteNum')
-        temp = response.order_by('-voteNum').first()
-        print(temp2)
-        print(temp.check)
+        temp = response.order_by('-voteNum')
         #sends error code if all ideas have been nominated
-        if(not response or temp.check != 0):
+        if(not response):
            return HttpResponse("NULL869")
-        return HttpResponse(temp2)
+        
+        data = serializers.serialize('json', list(temp), fields=('response_text','voteNum'))
+        return HttpResponse(data)
     else:
         response = Response.objects.filter()
 

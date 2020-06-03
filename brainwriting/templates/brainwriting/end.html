@@ -9,59 +9,29 @@
         <h2>Brainstorming is Complete!</h2><br>
         <textarea readonly id="ideas" cols="50" rows="20" onclick="vote('one')"></textarea><br>
         <button onclick="newSession()"> Start a New Session!</button>
-        <button onclick="testButton()"> TTTEEEST!</button>
         {{ room_name|json_script:"room-name" }}
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             
 
-            testIdeas()
-            function testButton(){
-                //Reset checks on all objects
-                $.ajax({
-                                            type: 'POST',
-                                            url: '/reset_responses/',
-                                            success: function(response) {
-                                                alert(response);
-                                            },
-                                });
-            }
-            function testIdeas() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/get_response/end',
-                    success: function(response) {
-                        if(response == "NULL869" || response == "none")
-                            return
-                        else {
-                            document.getElementById("ideas").value = response;
-                            //current = response[0]
-                            //While(current!=response.last)
-                            //    document.getElementById("ideas").value = document.getElementById("ideas").value + currentIdea;
-                        }
-                    },
-                });
-            }
+            loadIdeas()
             function loadIdeas() {
                 $.ajax({
                     type: 'GET',
                     url: '/get_response/end',
+                    dataType: "json",
                     success: function(response) {
-                        currentIdea = response;
                         if(response == "NULL869" || response == "none")
                             return
                         else {
-                            document.getElementById("ideas").value = document.getElementById("ideas").value + currentIdea;
-                            $.ajax({
-                                type: 'POST',
-                                url: '/upd_response/',
-                                data: {
-                                    response: currentIdea,
-                                    check: "no"
-                                },
-                            });  
-                            loadIdeas()
+                            current = response[0];
+                            i=0;
+                            while(current!=response[response.length]){
+                                document.getElementById("ideas").value += current.fields.response_text + '\n';
+                                i++;
+                                current = response[i];
+                            }
                         }
                     },
                 });
