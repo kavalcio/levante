@@ -10,6 +10,8 @@
         <input type="text" value="room code" id="myInput" onclick="copyFunction()"><br>
         <input id="join-room" type="button" value="Enter Room" onclick="joinRoom()">
         {{ room_name|json_script:"room-name" }}
+        {% load static %}  
+        <link rel="stylesheet" href="{% static 'roomCode.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';

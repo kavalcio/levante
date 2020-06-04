@@ -8,6 +8,8 @@
         <h1>levanté!</h1>
         <input id="problem-description" type="text" size="100" rows="20" value = "Type your brainstorming question here i.e. How might we?..." onclick=clearText()> <br>
         <button onclick="setupRoom()">Press Enter to Create Room</button>
+        {% load static %}  
+        <link rel="stylesheet" href="{% static 'roomCreate.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';

@@ -12,6 +12,8 @@
         {{ room_name|json_script:"room-name" }}
         {{ user_name|json_script:"user-name" }}
         {{ room_num|json_script:"room-num" }}
+        {% load static %}  
+        <link rel="stylesheet" href="{% static 'room.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';

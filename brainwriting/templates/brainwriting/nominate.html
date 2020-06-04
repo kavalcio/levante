@@ -10,6 +10,8 @@
         <textarea id="current-idea" cols="100" rows="20"></textarea>
         <button onclick="nominateIdea()">Nominate</button><br>
         {{ user_name|json_script:"user-name" }}
+        {% load static %}  
+        <link rel="stylesheet" href="{% static 'nominate.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';
