@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <head>
+            <meta charset="utf-8"/>
+            <title>Brain Room</title>
+        </head>
+    </head>
+    <body>
+        <h2>Brainstorming is Complete!</h2><br>
+        <textarea readonly id="ideas" cols="50" rows="20" onclick="vote('one')"></textarea><br>
+        <button onclick="newSession()"> Start a New Session!</button>
+        {{ room_name|json_script:"room-name" }}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script>
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            
+
+            loadIdeas()
+            function loadIdeas() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_response/end',
+                    dataType: "json",
+                    success: function(response) {
+                        if(response == "NULL869" || response == "none")
+                            return
+                        else {
+                            current = response[0];
+                            i=0;
+                            while(current!=response[response.length]){
+                                document.getElementById("ideas").value += current.fields.response_text + '\n';
+                                i++;
+                                current = response[i];
+                            }
+                        }
+                    },
+                });
+            }
+
+            function newSession(){
+                window.location.pathname = window.location.pathname.split(roomName)[0];
+            }
+        </script>
+    </body>
+</html>

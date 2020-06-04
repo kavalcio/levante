@@ -17,7 +17,7 @@
             // Loads the first three ideas
             loadNextIdea("one", true)
             loadNextIdea("two", true)
-            oadNextIdea("three", true)
+            loadNextIdea("three", true)
 
             function vote(ideaNum){
                 const idea = document.getElementById("idea-"+ideaNum).value
@@ -27,7 +27,7 @@
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            voted: "yes"
+                            check: "vote"
                         },
                         success: function(response) {
                             alert(response);
@@ -45,7 +45,7 @@
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            voted: "no"
+                            check: "no"
                         },
                         success: function(response) {
                             alert(response);
@@ -58,7 +58,7 @@
                     url: '/get_response/voting',
                     success: function(response) {
                         if(response == "NULL869" || response == "none")
-                            alert("You are done brainstorming!")
+                            window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
                         else 
                             document.getElementById("idea-"+ideaNum).value = response;
                     },

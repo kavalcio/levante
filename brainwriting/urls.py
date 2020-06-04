@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('add_response/', views.add_response, name='add_response'),
+    path('reset_responses/', views.reset_responses, name='reset_responses'),
     path('get_response_and_comments/', views.get_response_and_comments, name='get_response_and_comments'),
     path('get_response/<str:page>', views.get_response, name='get_response'),
     path('add_comment/', views.add_comment, name='add_comment'),
@@ -20,5 +21,6 @@ urlpatterns = [
     path('<str:room_name>/<str:user_name>/nominate/', views.nominate, name='nominate'),
     path('<str:room_name>/<str:user_name>/development/', views.development, name='development'),
     path('<str:room_name>/<str:user_name>/voting/', views.voting, name='voting'),
+    path('<str:room_name>/<str:user_name>/end/', views.end, name='end'),
     path('<str:room_name>/<str:user_name>/<str:room_num>/', views.room, name='room'),
 ]

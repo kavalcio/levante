@@ -27,8 +27,17 @@
                     success: function(response) {
                         
                         //forward to voting if all ideas have been nominated                        
-                        if(response == "NULL869" || response == "None")
+                        if(response == "NULL869" || response == "None"){
+                            //Reset checks on all objects
+                            $.ajax({
+                                        type: 'POST',
+                                        url: '/reset_responses/',
+                                        success: function(response) {
+                                            alert(response);
+                                        },
+                            });
                             window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+                        }
                         else
                             document.getElementById("current-idea").value = response;
                     },
@@ -43,7 +52,7 @@
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            nomination: "yes"
+                            check: "nominate"
                         },
                         success: function(response) {
                             alert(response);
@@ -61,7 +70,7 @@
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            nomination: "no"
+                            check: "no"
                         },
                         success: function(response) {
                             alert(response);
