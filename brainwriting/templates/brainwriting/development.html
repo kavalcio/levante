@@ -15,9 +15,11 @@
         <link rel="stylesheet" href="{% static 'development.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
+            var token = '{{csrf_token}}';
             function loadNextIdea(firstRun) {
                 $.ajax({
                     type: 'GET',
+                    headers: { "X-CSRFToken": token },
                     url: '/get_response_and_comments/',
                     success: function(result) {
                         const resultObj = JSON.parse(result);
@@ -41,6 +43,7 @@
                 const idea = document.querySelector('#current-idea').value;
                 $.ajax({
                     type: 'POST',
+                    headers: { "X-CSRFToken": token },
                     url: '/upd_response/',
                     data: {
                         response: idea,
@@ -57,6 +60,7 @@
 
                 $.ajax({
                     type: 'POST',
+                    headers: { "X-CSRFToken": token },
                     url: '/add_comment/',
                     data: {
                         idea: currentIdea,
