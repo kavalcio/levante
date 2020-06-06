@@ -13,21 +13,21 @@
         <button onclick="loadThreeNext()"> Next Ideas</button>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            let currentIdea = null;
-
+            var token = '{{csrf_token}}';
             // Loads the first three ideas
             loadNextIdea("one", true)
             loadNextIdea("two", true)
-            oadNextIdea("three", true)
+            loadNextIdea("three", true)
 
             function vote(ideaNum){
                 const idea = document.getElementById("idea-"+ideaNum).value
                     $.ajax({
                         type: 'POST',
+                        headers: { "X-CSRFToken": token },
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            voted: "yes"
+                            check: "vote"
                         },
                         success: function(response) {
                             alert(response);
@@ -41,10 +41,11 @@
                 if(document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun){
                     $.ajax({
                         type: 'POST',
+                        headers: { "X-CSRFToken": token },
                         url: '/upd_response/',
                         data: {
                             response: idea,
-                            voted: "no"
+                            check: "no"
                         },
                         success: function(response) {
                             alert(response);
@@ -53,11 +54,11 @@
                 }
                 $.ajax({
                     type: 'GET',
+                    headers: { "X-CSRFToken": token },
                     url: '/get_response/voting',
                     success: function(response) {
-                        currentIdea = response;
                         if(response == "NULL869" || response == "none")
-                            alert("You are done brainstorming!")
+                            window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
                         else 
                             document.getElementById("idea-"+ideaNum).value = response;
                     },
