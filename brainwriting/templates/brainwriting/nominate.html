@@ -1,85 +1,96 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Brain Room</title>
-    </head>
-    <body>
-        <h2>Nominate Ideas!</h2><br>
-        <button onclick="dontNominateIdea()">Don't Nominate</button>
-        <textarea id="current-idea" cols="100" rows="20"></textarea>
-        <button onclick="nominateIdea()">Nominate</button><br>
-        {{ user_name|json_script:"user-name" }}
-        {% load static %}  
-        <link rel="stylesheet" href="{% static 'nominate.css' %}">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script>
-            var token = '{{csrf_token}}';
-            const user = JSON.parse(document.getElementById('user-name').textContent);
 
+<head>
+    <meta charset="utf-8" />
+    <title>Brain Room</title>
+    <link rel="stylesheet" href="{% static 'nominatedd.css' %}">
+</head>
+
+<body>
+
+    <!--Used Input instead of button, not sure if it would effect the functionality-->
+    <input type="image" name="don't nomniate" id="left-button" src="{% static 'images/left-arrow.png' %}">
+    <div id="main-container">
+        <!--<button onclick="dontNominateIdea()">Don't Nominate</button> -->
+        <input type="text" id="current-idea"></input>
+        <!--<button type="image" onclick="nominateIdea()">Nominate</button><br -->
+    </div>
+    <input type="image" name="nominate" id="right-button" src="{% static 'images/right-arrow.png' %}">
+
+    {{ user_name|json_script:"user-name" }}
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        var token = '{{csrf_token}}';
+        const user = JSON.parse(document.getElementById('user-name').textContent);
+
+        loadNextIdea()
+        //loads the next idea from the db and navigates to the next page if no more ideas are available
+        function loadNextIdea() {
+            $.ajax({
+                type: 'GET',
+                headers: { "X-CSRFToken": token },
+                url: '/get_response/nominate',
+                success: function (response) {
+
+                    //forward to voting if all ideas have been nominated                        
+                    if (response == "NULL869" || response == "None") {
+                        //Reset checks on all objects
+                        $.ajax({
+                            type: 'POST',
+                            url: '/reset_responses/',
+                            success: function (response) {
+                                alert(response);
+                            },
+                        });
+                        window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+                    }
+                    else
+                        document.getElementById("current-idea").value = response;
+                },
+            });
+        }
+        //updates the nomination parameter of the response and loads the next idea
+        function nominateIdea() {
+            const idea = document.querySelector('#current-idea').value;
+            $.ajax({
+                type: 'POST',
+                headers: { "X-CSRFToken": token },
+                url: '/upd_response/',
+                data: {
+                    response: idea,
+                    check: "nominate"
+                },
+                success: function (response) {
+                    alert(response);
+                },
+            });
             loadNextIdea()
-            //loads the next idea from the db and navigates to the next page if no more ideas are available
-            function loadNextIdea(){
-                $.ajax({
-                    type: 'GET',
-                    headers: { "X-CSRFToken": token },
-                    url: '/get_response/nominate',
-                    success: function(response) {
-                        
-                        //forward to voting if all ideas have been nominated                        
-                        if(response == "NULL869" || response == "None"){
-                            //Reset checks on all objects
-                            $.ajax({
-                                        type: 'POST',
-                                        url: '/reset_responses/',
-                                        success: function(response) {
-                                            alert(response);
-                                        },
-                            });
-                            window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
-                        }
-                        else
-                            document.getElementById("current-idea").value = response;
-                    },
-                });
-            }
-            //updates the nomination parameter of the response and loads the next idea
-            function nominateIdea(){
-                const idea = document.querySelector('#current-idea').value;
-                    $.ajax({
-                        type: 'POST',
-                        headers: { "X-CSRFToken": token },
-                        url: '/upd_response/',
-                        data: {
-                            response: idea,
-                            check: "nominate"
-                        },
-                        success: function(response) {
-                            alert(response);
-                        },
-                    });
-                loadNextIdea()
-            }
+        }
 
-            //updates the nomination parameter of the response and loads the next idea
-            function dontNominateIdea(){
-                const idea = document.querySelector('#current-idea').value;
-                    $.ajax({
-                        type: 'POST',
-                        headers: { "X-CSRFToken": token },
-                        url: '/upd_response/',
-                        data: {
-                            response: idea,
-                            check: "no"
-                        },
-                        success: function(response) {
-                            alert(response);
-                        },
-                    });
-                loadNextIdea()
-            }
+        //updates the nomination parameter of the response and loads the next idea
+        function dontNominateIdea() {
+            const idea = document.querySelector('#current-idea').value;
+            $.ajax({
+                type: 'POST',
+                headers: { "X-CSRFToken": token },
+                url: '/upd_response/',
+                data: {
+                    response: idea,
+                    check: "no"
+                },
+                success: function (response) {
+                    alert(response);
+                },
+            });
+            loadNextIdea()
+        }
 
-                            
-        </script>
-    </body>
+
+    </script>
+</body>
+
 </html>

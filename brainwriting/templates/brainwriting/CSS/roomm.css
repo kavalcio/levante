@@ -1,3 +1,6 @@
+*{  color: white;
+    outline: none;
+}
 body{
     font-family: helvetica;
     margin: 0;
@@ -6,47 +9,48 @@ body{
     overflow: hidden;
 }
 #main-container{
-
-    width: 50%;
-    height: 500px;
-    margin-left:25%;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    padding-top: 90px;
 }
+
 #problem-description{
+    font-size: 2vw;
     display: block;
     margin: auto;
-    margin-top: 10px;
     border: solid 2px  #06d6a0;
     text-align: center;
     width: 90%;
+    height: 50px;
     background-color: #06d6a0;
 }
 #message-input{
+    font-size: 3vw;
+    font-style: italic;
     display: block;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 30px;
     border: solid 12px #06d6a0;
     text-align: center;
     width: 90%;
-    height: 60%;
+    height: 300px;
     background-color: #f36c6d;
-
 }
+
 #message-submit{
+    font-size: 2vw;
     display: block;
     margin: auto;
     margin-top: 10px;
-    border: solid 2px  #06d6a0;
+    border: solid 2px  #073b4c;
     border-radius: 100px;
     text-align: center;
     width: 40%;
     height: 60px;
-    background-color: #06d6a0;
+    background-color: #118ab2;
 
 }
+
+
+
 #time-container{
     width: 50%;
     display: block;

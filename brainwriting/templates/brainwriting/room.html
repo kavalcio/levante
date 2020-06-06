@@ -1,94 +1,103 @@
+<!--Change notes: Moved {% load static %} to top, moved CSS link to head, added required tags. -->
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Brain Room</title>
-    </head>
-    <body>
-        <input id="problem-description" type="text" size="100"><br>
-        <input id="message-input" type="text" size="100" value = "Type your ideas here!" onclick='clearText()'><br>
-        <input id="message-submit" type="button" value="Press Enter to Submit"><br>
-        <div>You have <span id="time">30</span> seconds!</div>
-        {{ room_name|json_script:"room-name" }}
-        {{ user_name|json_script:"user-name" }}
-        {{ room_num|json_script:"room-num" }}
-        {% load static %}  
-        <link rel="stylesheet" href="{% static 'room.css' %}">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script>
-            var token = '{{csrf_token}}';
-            const roomName = JSON.parse(document.getElementById('room-name').textContent);
-            const roomNum = JSON.parse(document.getElementById('room-num').textContent);
-            const user = JSON.parse(document.getElementById('user-name').textContent);
-            const firstRun = true
-           //Get problem description
-           $.ajax({
-                        type: 'GET',
-                        headers: { "X-CSRFToken": token },
-                        url: '/get_question/',
-                        success: function(response) {
-                            document.querySelector('#problem-description').value = response;
-                        },
-                    });
 
-            document.querySelector('#message-input').focus();
-            document.querySelector('#message-input').onkeyup = function(e) {
-                if (e.keyCode === 13) {  // enter, return
-                    document.querySelector('#message-submit').click();
+<head>
+    <meta charset="utf-8" />
+    <title>Brain Room</title>
+    <link rel="stylesheet" href="{% static 'roomm.css' %}">
+</head>
+
+<body>
+    <div id="main-container">
+        <input id="problem-description" type="text" size="100" onclick='clearText()'><br>
+        <input id="message-input" type="text" size="100" value="Type your ideas here!" onclick='clearText()'><br>
+        <input id="message-submit" type="button" value="Press Enter to Save"><br>
+
+    </div>
+
+    <div>You have <span id="time">30</span> seconds!</div>
+    {{ room_name|json_script:"room-name" }}
+    {{ user_name|json_script:"user-name" }}
+    {{ room_num|json_script:"room-num" }}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        var token = '{{csrf_token}}';
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const roomNum = JSON.parse(document.getElementById('room-num').textContent);
+        const user = JSON.parse(document.getElementById('user-name').textContent);
+        const firstRun = true
+        //Get problem description
+        $.ajax({
+            type: 'GET',
+            headers: { "X-CSRFToken": token },
+            url: '/get_question/',
+            success: function (response) {
+                document.querySelector('#problem-description').value = response;
+            },
+        });
+
+        document.querySelector('#message-input').focus();
+        document.querySelector('#message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#message-submit').click();
+            }
+        };
+
+        document.querySelector('#message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#message-input');
+            const message = messageInputDom.value;
+            const problem = document.querySelector('#problem-description').value;
+            //send the problem description along with the idea to the server
+            $.ajax({
+                type: 'POST',
+                headers: { "X-CSRFToken": token },
+                url: '/add_response/',
+                data: {
+                    message: message,
+                    problem: problem,
+                },
+                success: function (response) {
+                    alert(response);
+                },
+            });
+        };
+
+        function clearText() {
+            if (firstRun == true)
+                document.querySelector('#message-input').value = ""
+
+            firstRun = false
+        }
+
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = seconds; //minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    //if this was the first isntance of the idea generation page then navigate to the inspiration page
+                    if (roomNum == 1)
+                        window.location.pathname = window.location.pathname.split('/1/')[0] + '/inspiration/';
+                    else if (roomNum == 2)
+                        window.location.pathname = window.location.pathname.split('/2/')[0] + '/nominate/';
                 }
-            };
+            }, 1000);
+        }
 
-            document.querySelector('#message-submit').onclick = function(e) {
-                const messageInputDom = document.querySelector('#message-input');
-                const message = messageInputDom.value;
-                const problem = document.querySelector('#problem-description').value;
-                //send the problem description along with the idea to the server
-                $.ajax({
-                        type: 'POST',
-                        headers: { "X-CSRFToken": token },
-                        url: '/add_response/',
-                        data: {
-                            message: message,
-                            problem: problem,
-                        },
-                        success: function(response) {
-                            alert(response);
-                        },
-                    });
-            };                   
+        window.onload = function () {
+            display = document.querySelector('#time');
+            startTimer(30, display); //switch to 120 seconds
+        };
+    </script>
+</body>
 
-            function clearText(){
-                if(firstRun == true)
-                     document.querySelector('#message-input').value = ""
-                
-                firstRun = false 
-            }
-
-            function startTimer(duration, display) {
-                var timer = duration, minutes, seconds;
-                setInterval(function () {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
-
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                    display.textContent = seconds; //minutes + ":" + seconds;
-
-                    if (--timer < 0) {
-                        //if this was the first isntance of the idea generation page then navigate to the inspiration page
-                        if (roomNum == 1)
-                            window.location.pathname = window.location.pathname.split('/1/')[0] + '/inspiration/';
-                        else if (roomNum == 2)
-                            window.location.pathname = window.location.pathname.split('/2/')[0] + '/nominate/';
-                    }
-                }, 1000);
-            }
-
-            window.onload = function () {
-                    display = document.querySelector('#time');
-                startTimer(30, display); //switch to 120 seconds
-            };
-        </script>
-    </body>
 </html>
