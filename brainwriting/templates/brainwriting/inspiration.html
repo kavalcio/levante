@@ -21,13 +21,16 @@
             loadNextIdea("two")
             loadNextIdea("three")
             $.ajax({
-                        type: 'GET',
-                        headers: { "X-CSRFToken": token },
-                        url: '/get_question/',
-                        success: function(response) {
-                            document.querySelector('#problem-description').value = response;
-                        },
-                    });
+                type: 'GET',
+                headers: { "X-CSRFToken": token },
+                url: '/get_question/',
+                data: {
+                    room_id: localStorage.getItem('roomId')
+                },
+                success: function(response) {
+                    document.querySelector('#problem-description').value = response;
+                },
+            });
 
             function loadNextIdea(ideaNum) {
                 const idea = document.getElementById("idea-"+ideaNum).value

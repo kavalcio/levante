@@ -51,15 +51,6 @@
                     },
                 });
             }
-
-            document.querySelector('#create-room').onclick = async function(e) {
-                createRoom();
-            };
-            document.querySelector('#room-name-submit').onclick = function(e) {
-                // Check if room exists
-                var roomName = document.querySelector('#room-name-input').value;
-                joinRoom(roomName);        
-            }
         </script>
     </body>
 </html>
