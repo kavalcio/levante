@@ -6,12 +6,28 @@
     </head>
     <body>
         <h1>levanté!</h1>
-        <input id="problem-description" type="text" size="100" rows="20" value = "Type your brainstorming question here i.e. How might we?..." onclick=clearText()> <br>
+        <input id="problem-description" type="text" size="100" rows="20"> <br>
         <button onclick="setupRoom()">Press Enter to Create Room</button>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-            //simply clears the text for the Key to be entered
-            function clearText(){
+            const questionPlaceholder = "Type your brainstorming question here i.e. How might we?...";
+            const tutorialQuestion = "Tutorial question (replace this)?";
+
+            function initializeText() {
+                // Initializes necessary fields for the question text box
+                const questionElement = document.querySelector('#problem-description');
+                const isTutorial = localStorage.getItem('isTutorial') === 'true' ? true : false;
+                if (isTutorial == true) {
+                    questionElement.value = tutorialQuestion;
+                    questionElement.disabled = true;
+                } else {
+                    questionElement.value = questionPlaceholder;
+                    questionElement.onclick = function(){clearText()};
+                }
+            }
+
+            function clearText() {
+                //simply clears the text for the Key to be entered
                 document.querySelector('#problem-description').value = ""
             }
             function setupRoom(){
@@ -29,9 +45,11 @@
                 });
                 window.location.pathname = window.location.pathname.split("create")[0] + "code"
             }
+
+            initializeText();
             document.querySelector('#problem-description').onkeyup = function(e) {
                 if (e.keyCode === 13) {  // enter, return
-                    setupRoom()
+                    setupRoom();
                 }
             };
         </script>

@@ -17,16 +17,23 @@
             loadNextIdea()
             //loads the next idea from the db and navigates to the next page if no more ideas are available
             function loadNextIdea(){
+                const roomId = localStorage.getItem('roomId');
                 $.ajax({
                     type: 'GET',
-                    url: '/get_response/nominate',
+                    url: '/get_responses/',
+                    data: {
+                        page: 'nominate',
+                        room_id: roomId,
+                    },
                     success: function(response) {
-                        
                         //forward to voting if all ideas have been nominated                        
-                        if(response == "NULL869" || response == "None")
+                        if (response == "NULL869" || response == "None") {
                             window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
-                        else
-                            document.getElementById("current-idea").value = response;
+                        } else {
+                            const ideas = JSON.parse(response);
+                            currentIdea =  ideas[0].fields.response_text;
+                            document.getElementById("current-idea").value = currentIdea;
+                        }
                     },
                 });
             }

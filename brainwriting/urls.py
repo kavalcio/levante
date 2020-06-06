@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('add_response/', views.add_response, name='add_response'),
-    path('get_response_and_comments/', views.get_response_and_comments, name='get_response_and_comments'),
-    path('get_response/<str:page>', views.get_response, name='get_response'),
+    path('get_comments/', views.get_comments, name='get_comments'),
+    path('get_responses/', views.get_responses, name='get_responses'),
     path('add_comment/', views.add_comment, name='add_comment'),
     path('add_question/', views.add_question, name='add_question'),
     path('get_question/', views.get_question, name='get_question'),

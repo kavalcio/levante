@@ -139,17 +139,17 @@ def add_response(request):
 
     return HttpResponse(request.session)
 
-def get_response_and_comments(request):
+def get_comments(request):
     if not request.is_ajax() or not request.method=='GET':
         return HttpResponseNotAllowed(['GET'])
 
-    responses = Response.objects.filter()
+    responseId = request.GET['response_id']
 
-    response = responses.order_by('?').first()
+    response = Response.objects.filter(id=responseId).first()
+
     comments = Comment.objects.filter(response=response)
 
     obj = {
-        "response": response.response_text,
         "comments": []
     }
 
@@ -158,25 +158,32 @@ def get_response_and_comments(request):
 
     return HttpResponse(json.dumps(obj))
 
-def get_response(request, page):
-    #if request is from the nominate page only returns an idea that has not been nominated yet
-    if(page == "nominate"):
-         response = Response.objects.filter(nominations = 0)
-         #sends error code if all ideas have been nominated
-         if(not response):
-           return HttpResponse("NULL869")
-    elif(page == "development"):
-        response = Response.objects.filter(developed = 0)
-        if(not response):
-           return HttpResponse("NULL869")
-    elif(page == "voting"):
-        response = Response.objects.filter(voted = 0)
-        if(not response):
-           return HttpResponse("NULL869")       
-    else:
-        response = Response.objects.filter()
+def get_responses(request):
+    if not request.is_ajax() or not request.method=='GET':
+        return HttpResponseNotAllowed(['GET'])
 
-    return HttpResponse(response.order_by('?').first())
+    # Get input parameters
+    page = request.GET['page']
+    roomId = request.GET['room_id']
+
+    room = Room.objects.get(room_id = roomId)
+
+    if (page == "nominate"):
+        responses = Response.objects.filter(room = room, nominations = 0)
+    elif (page == "development"):
+        responses = Response.objects.filter(room = room, developed = 0)
+    elif (page == "voting"):
+        responses = Response.objects.filter(room = room, voted = 0)
+    else:
+        responses = Response.objects.filter(room = room)
+
+    #sends error code if all ideas have been nominated
+    if (not responses):
+        return HttpResponse("NULL869")
+
+    serializedResponse = serializers.serialize('json', responses)
+
+    return HttpResponse(serializedResponse)
 
 def add_comment(request):
     if not request.is_ajax() or not request.method=='POST':
@@ -199,6 +206,9 @@ def add_comment(request):
     return HttpResponse()
 
 def create_room(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
     roomKey = get_random_string(length = 5, allowed_chars = (string.ascii_uppercase + string.digits))
     keyExists = Room.objects.filter(room_key=roomKey, active=True).exists()
 
@@ -206,9 +216,12 @@ def create_room(request):
         roomKey = get_random_string(length = 5, allowed_chars = (string.ascii_uppercase + string.digits))
         keyExists = Room.objects.filter(room_key=roomKey, active=True).exists()
 
+    isTutorial = request.POST['is_tutorial']
+
     roomObj = Room(
-        room_key=roomKey,
-        active=True,
+        room_key = roomKey,
+        active = True,
+        is_tutorial = isTutorial
     )
 
     roomObj.save()

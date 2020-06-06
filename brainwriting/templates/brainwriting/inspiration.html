@@ -14,9 +14,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             // Loads the first three ideas
-            loadNextIdea("one")
-            loadNextIdea("two")
-            loadNextIdea("three")
+            loadNextIdeas();
             $.ajax({
                 type: 'GET',
                 url: '/get_question/',
@@ -28,24 +26,37 @@
                 },
             });
 
-            function loadNextIdea(ideaNum) {
-                const idea = document.getElementById("idea-"+ideaNum).value
-                $.ajax({
+            function getIdeas() {
+                const roomId = localStorage.getItem('roomId');
+                return $.ajax({
                     type: 'GET',
-                    url: '/get_response/inspiration',
+                    url: '/get_responses/',
+                    data: {
+                        page: 'inspiration',
+                        room_id: roomId,
+                    },
                     success: function(response) {
-                        currentIdea = response;
-                        if(response == "NULL869" || response == "none")
-                            alert("You are done brainstorming!")
-                        else 
-                            document.getElementById("idea-"+ideaNum).value = response;
+                        if (response == "NULL869" || response == "none")
+                        {
+                            return;
+                        }
+
+                        return response;
                     },
                 });
             }
-            function loadThreeNext(){
-                loadNextIdea("one", false)
-                loadNextIdea("two", false)
-                loadNextIdea("three", false)
+
+            async function loadNextIdeas() {
+                const ideaElements = ['idea-one', 'idea-two', 'idea-three'];
+
+                let ideas = await getIdeas();
+                ideas = JSON.parse(ideas);
+
+                // TODO: pick ideas randomly instead of in order
+                // TODO: only get ideas that came from other users
+                for (let i = 0; i < 3; i++) {
+                    document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+                }
             }
 
             function startTimer(duration, display) {
@@ -58,8 +69,9 @@
                     seconds = seconds < 10 ? "0" + seconds : seconds;
 
                     display.textContent = seconds; //minutes + ":" + seconds;
-                    if(seconds == duration/2)
-                        loadThreeNext()
+                    if (seconds == duration / 2) {
+                        loadNextIdeas();
+                    }
                     if (--timer < 0) {
                         window.location.pathname = window.location.pathname.split("inspiration")[0] + '2/';
                     }

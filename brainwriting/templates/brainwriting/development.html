@@ -13,20 +13,52 @@
         <button onclick="submitComment()">Submit</button>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
+            let currentIdea = null;
+            let ideas = null;
+            init();
+
+            async function init() {
+                ideas = await getIdeas();
+                ideas = JSON.parse(ideas);
+                loadNextIdea(true);
+            }
+            function getIdeas() {
+                const roomId = localStorage.getItem('roomId');
+                return $.ajax({
+                    type: 'GET',
+                    url: '/get_responses/',
+                    data: {
+                        page: 'inspiration',
+                        room_id: roomId,
+                    },
+                    success: function(response) {
+                        if (response == "NULL869" || response == "none")
+                        {
+                            return;
+                        }
+                        return response;
+                    },
+                });
+            }
             function loadNextIdea(firstRun) {
+                // TODO: only select from undeveloped ideas
+                const ideaObj= ideas[Math.floor(Math.random() * ideas.length)];
+                currentIdea = ideaObj.fields.response_text;
                 $.ajax({
                     type: 'GET',
-                    url: '/get_response_and_comments/',
+                    url: '/get_comments/',
+                    data: {
+                        response_id: ideaObj.pk,
+                    },
                     success: function(result) {
-                        const resultObj = JSON.parse(result);
-                        currentIdea = resultObj.response;
+                        const comments = JSON.parse(result);
 
-                        if(result == "NULL869" || result == "none") {
+                        if (result == "NULL869" || result == "none") {
                             window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
                         } else {
                             document.getElementById("current-idea").value = currentIdea;
-                            for (index in resultObj.comments) {
-                                document.getElementById("current-idea").value += '\n' + resultObj.comments[index];
+                            for (index in comments) {
+                                document.getElementById("current-idea").value += '\n' + comments[index];
                             }
                         }
                     },
@@ -66,8 +98,6 @@
                 });
             }
 
-            let currentIdea = null;
-            loadNextIdea(true);
         </script>
     </body>
 </html>
