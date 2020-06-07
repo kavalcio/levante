@@ -31,7 +31,7 @@ body{
     margin-top: -50%;
     width: 100%;
 }
-#room-code{
+#myInput{
     font-size: 2vw;
     text-align: center;
     height: 40px;
