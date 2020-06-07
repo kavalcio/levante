@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.template import loader
+from django.core import serializers
 from django.utils.crypto import get_random_string
 from .models import Room, Question, Response, Comment
 from django.core import serializers
@@ -52,6 +53,11 @@ def voting(request, room_name, user_name):
         'room_name': room_name,
         'user_name': user_name
     })
+def end(request, room_name, user_name):
+    return render(request, 'brainwriting/end.html', {
+        'room_name': room_name,
+        'user_name': user_name
+    })
 
 
 # HTTP endpoints #
@@ -83,44 +89,35 @@ def upd_response(request):
         return HttpResponseNotAllowed(['POST'])
     
     #Ensuring the expected variables are in the POST request
-    if "nomination" in request.POST:  
-        nomination = request.POST['nomination']
+    if "check" in request.POST:  
+        check = request.POST['check']
     else:
-        nomination = "none"
-    if "response" in request.POST:
-        responseToUp = request.POST['response']
-    else: 
-        responseToUp = "none"
-    if "developed" in request.POST:
-        developed = request.POST['developed']
-    else:
-        developed = "none"
-    if "voted" in request.POST:
-        voted = request.POST['voted']
-    else:
-        voted = "none"    
+        check = "none"
+    responseToUp = request.POST['response']
 
-    if(developed == "yes"):
+    if(check == "yes" or check == "nominate" or check == "vote"):
         temp = Response.objects.get(response_text=responseToUp)
-        temp.developed = 2 
+        if(check == "nominate"):
+            temp.voteNum = 1
+        if(check == "vote"):
+            temp.voteNum = temp.voteNum + 1
+        temp.check = 1 
         temp.save()
-    if(voted == "yes"):
+    elif(check == "no"):
         temp = Response.objects.get(response_text=responseToUp)
-        temp.voted = 1 
-        temp.save()
-    elif(voted == "no"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.voted = 2
+        temp.check = 2
         temp.save()       
-    if(nomination == "yes"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.nominations = 1 
-        temp.save()
-    elif(nomination == "no"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.nominations = 2 
-        temp.save()
     
+    return HttpResponse(request.session)
+
+def reset_responses(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    for temp in Response.objects.all():
+        temp.check = 0
+        temp.save()  
+
     return HttpResponse(request.session)
 
 def add_response(request):
@@ -132,7 +129,6 @@ def add_response(request):
     responseObj = Response(
         room=roomObj,
         response_text=request.POST['message'],
-        nominations=0
     )
 
     responseObj.save()
@@ -168,12 +164,13 @@ def get_responses(request):
 
     room = Room.objects.get(room_id = roomId)
 
-    if (page == "nominate"):
-        responses = Response.objects.filter(room = room, nominations = 0)
-    elif (page == "development"):
-        responses = Response.objects.filter(room = room, developed = 0)
+    if (page == "nominate" or page == "development"):
+        responses = Response.objects.filter(room = room, check = 0)
     elif (page == "voting"):
-        responses = Response.objects.filter(room = room, voted = 0)
+        responses = Response.objects.filter(room = room, voteNum = 1)
+    elif(page == "end"):
+        responses = Response.objects.exclude(voteNum = 0)
+        # temp = response.order_by('-voteNum')
     else:
         responses = Response.objects.filter(room = room)
 
@@ -193,7 +190,7 @@ def add_comment(request):
     comment = request.POST['comment']
 
     responseObj = Response.objects.get(response_text=idea)
-    responseObj.developed = 1 
+    responseObj.check = 1 
     responseObj.save()
 
     commentObj = Comment(

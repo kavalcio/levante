@@ -25,7 +25,7 @@ SECRET_KEY = 'e954%a_2@(ge^j8_b$p09m5%yb&n9u%r(9fd!7s7dzciowk45('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.15', 'localhost']
+ALLOWED_HOSTS = ['192.168.0.15', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -121,6 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (os.path.join(
+    BASE_DIR, 'brainwriting/templates/brainwriting/CSS'), )
 
 CHANNEL_LAYERS = {
     'default': {
