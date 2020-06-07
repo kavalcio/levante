@@ -17,8 +17,11 @@
             <br>
             <h2 id="key-no">0424013</h2>
 
-            <!-- Commented this input because it wasn't in Tim's mockup. 
-              <input type="text" value="room code" id="room-code" onclick="copyFunction()"><br> -->
+            <!--Commented this input because it wasn't in Tim's mockup. -->
+            <!-- To comment cmnd / -->
+
+            <input type="text" value="room code" id="myInput" onclick="copyFunction()"><br>
+
             {{ room_name|json_script:"room-name" }}
         </div>
         <input id="join-room" type="button" value="Enter Room" onclick="joinRoom()">
@@ -38,9 +41,6 @@
 
             /* Select the text field */
             copyText.select();
-
-            /* Copy the text inside the text field */
-            document.execCommand("copy");
 
             /* Alert the copied text */
             alert("Copied link: " + copyText.value);
@@ -64,16 +64,6 @@
                 },
             });
         }
-
-        document.querySelector('#create-room').onclick = async function (e) {
-            createRoom();
-        };
-        document.querySelector('#room-name-submit').onclick = function (e) {
-            // Check if room exists
-            var roomName = document.querySelector('#room-name-input').value;
-            joinRoom(roomName);
-        }
     </script>
 </body>
-
 </html>

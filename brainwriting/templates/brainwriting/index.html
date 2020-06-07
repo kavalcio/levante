@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <title>Home Page - levanté!</title>
@@ -22,9 +21,6 @@
         </div>
 
     </div>
-
-
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
         var token = '{{csrf_token}}';
@@ -38,7 +34,9 @@
                 headers: { "X-CSRFToken": token },
                 url: '/create_room/',
                 success: function (response) {
-                    const roomKey = response;
+                    response = JSON.parse(response);
+                    const roomKey =  response[0].fields.room_key;
+                    localStorage.setItem('roomId', response[0].pk);
                     window.location.pathname = '/rooms/' + roomKey + '/admin/create';
                 },
             });
