@@ -16,10 +16,9 @@
             <div id="bottom-inputs">
                 <input id="log-in" type="button" value="Log In/Sign Up"><br>
                 <input id="create-room" type="button" value="Create New Room">
+                <input id="start-tutorial" type="button" value="Start Tutorial">
             </div>
-
         </div>
-
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
@@ -28,15 +27,21 @@
         function clearText() {
             document.querySelector('#room-name-input').value = ""
         }
-        function createRoom() {
+        function createRoom(isTutorial) {
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },
                 url: '/create_room/',
+                data: {
+                    is_tutorial: isTutorial ? 'True' : 'False',
+                },
                 success: function (response) {
                     response = JSON.parse(response);
                     const roomKey =  response[0].fields.room_key;
                     localStorage.setItem('roomId', response[0].pk);
+
+                    const isTutorial = response[0].fields.is_tutorial === 'True' ? true : false;
+                    localStorage.setItem('isTutorial', isTutorial);
                     window.location.pathname = '/rooms/' + roomKey + '/admin/create';
                 },
             });
@@ -69,7 +74,10 @@
             var roomName = document.querySelector('#room-name-input').value;
             joinRoom(roomName);
         }
+        document.querySelector('#start-tutorial').onclick = async function(e) {
+            const isTutorial = true;
+            createRoom(isTutorial);
+        };
     </script>
 </body>
-
 </html>

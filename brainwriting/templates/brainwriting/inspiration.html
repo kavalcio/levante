@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Peepee Room</title>
+    <title>Brain Room</title>
     <link rel="stylesheet" href="{% static 'inspirationn.css' %}">
 
 </head>
@@ -31,9 +31,7 @@
     <script>
         var token = '{{csrf_token}}';
         // Loads the first three ideas
-        loadNextIdea("one")
-        loadNextIdea("two")
-        loadNextIdea("three")
+        loadNextIdeas();
         $.ajax({
             type: 'GET',
             headers: { "X-CSRFToken": token },
@@ -48,6 +46,7 @@
 
         function loadNextIdea(ideaNum) {
             const idea = document.getElementById("idea-" + ideaNum).value
+
             $.ajax({
                 type: 'GET',
                 headers: { "X-CSRFToken": token },
@@ -61,12 +60,41 @@
                 },
             });
         }
-        function loadThreeNext() {
-            loadNextIdea("one", false)
-            loadNextIdea("two", false)
-            loadNextIdea("three", false)
+
+        function getIdeas() {
+            const roomId = localStorage.getItem('roomId');
+            return $.ajax({
+                type: 'GET',
+                headers: { "X-CSRFToken": token },
+                url: '/get_responses/',
+                data: {
+                    page: 'inspiration',
+                    room_id: roomId,
+                },
+                success: function(response) {
+                    if (response == "NULL869" || response == "none")
+                    {
+                        return;
+                    }
+                    return response;
+                },
+            });
         }
 
+        async function loadNextIdeas() {
+            const ideaElements = ['idea-one', 'idea-two', 'idea-three'];
+
+            let ideas = await getIdeas();
+            ideas = JSON.parse(ideas);
+
+            // TODO: pick ideas randomly instead of in order
+            // TODO: only get ideas that came from other users
+            for (let i = 0; i < 3; i++) {
+                if (ideas[i]) {
+                    document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+                }
+            }
+        }
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
             setInterval(function () {
@@ -78,7 +106,7 @@
 
                 display.textContent = seconds; //minutes + ":" + seconds;
                 if (seconds == duration / 2)
-                    loadThreeNext()
+                    loadNextIdeas();
                 if (--timer < 0) {
                     window.location.pathname = window.location.pathname.split("inspiration")[0] + '2/';
                 }
@@ -90,7 +118,6 @@
             startTimer(15, display); //switch to 30 seconds
         };
     </script>
-    -->
 </body>
 
 </html>
