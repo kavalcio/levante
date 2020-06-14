@@ -9,6 +9,7 @@
 </head>
 <body>
     <div id="main-container">
+        <!-- TODO: the problem description should not be an input -->
         <input id="problem-description" type="text" size="100" onclick='clearText()'><br>
         <input id="message-input" type="text" size="100" value="Type your ideas here!" onclick='clearText()'><br>
         <input id="message-submit" type="button" value="Press Enter to Save"><br>
@@ -27,7 +28,7 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const roomNum = JSON.parse(document.getElementById('room-num').textContent);
         const user = JSON.parse(document.getElementById('user-name').textContent);
-        const firstRun = true
+        let firstRun = true;
         //Get problem description
         $.ajax({
             type: 'GET',

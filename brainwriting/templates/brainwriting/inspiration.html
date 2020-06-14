@@ -59,7 +59,9 @@
                 // TODO: pick ideas randomly instead of in order
                 // TODO: only get ideas that came from other users
                 for (let i = 0; i < 3; i++) {
-                    document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+                    if (ideas[i]) {
+                        document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+                    }
                 }
             }
 

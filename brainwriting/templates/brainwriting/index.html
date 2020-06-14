@@ -16,6 +16,7 @@
             <div id="bottom-inputs">
                 <input id="log-in" type="button" value="Log In/Sign Up"><br>
                 <input id="create-room" type="button" value="Create New Room">
+                <input id="start-tutorial" type="button" value="Start Tutorial">
             </div>
         </div>
     </div>
@@ -26,7 +27,7 @@
         function clearText() {
             document.querySelector('#room-name-input').value = ""
         }
-        function createRoom() {
+        function createRoom(isTutorial) {
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },
