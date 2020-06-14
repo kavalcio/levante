@@ -4,18 +4,16 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Brain Room</title>
+    <title>Nominate - levanté!</title>
     <link rel="stylesheet" href="{% static 'nominate.css' %}">
 </head>
 
 <body>
-    <h1 id="nominate-header">Nominate Ideas For Further Discussion</h1>
-    <!--Used Input instead of button, not sure if it would effect the functionality-->
+    <h1 id="nominate-header">Nominate Ideas </h1>
+    <input id="problem-description" type="text" size="100" >
     <input type="image" name="don't nomniate" id="left-button" value="hey" src="{% static 'images/right-thumb.png' %}" onclick="dontNominateIdea()">
     <div id="main-container">
-        <!--<button onclick="dontNominateIdea()">Don't Nominate</button> -->
         <input type="text" id="idea-current" value="idea will appear here"></input>
-        <!--<button type="image" onclick="nominateIdea()">Nominate</button><br -->
     </div>
     <input type="image" name="nominate" id="right-button" src="{% static 'images/left-thumb.png' %}" onclick="nominateIdea()">
 
@@ -33,6 +31,18 @@
         var token = '{{csrf_token}}';
         const user = JSON.parse(document.getElementById('user-name').textContent);
 
+        //Get problem description
+        $.ajax({
+            type: 'GET',
+            headers: { "X-CSRFToken": token },
+            url: '/get_question/',
+            data: {
+                room_id: localStorage.getItem('roomId')
+            },
+            success: function (response) {
+                document.querySelector('#problem-description').value = response;
+            },
+        });
         loadNextIdea()
         //loads the next idea from the db and navigates to the next page if no more ideas are available
         function loadNextIdea() {
@@ -49,7 +59,7 @@
                             type: 'POST',
                             url: '/reset_responses/',
                             success: function (response) {
-                                alert(response);
+                                
                             },
                         });
                         window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
@@ -71,7 +81,7 @@
                     check: "nominate"
                 },
                 success: function (response) {
-                    alert(response);
+                    
                 },
             });
             loadNextIdea()
@@ -89,7 +99,7 @@
                     check: "no"
                 },
                 success: function (response) {
-                    alert(response);
+                    
                 },
             });
             loadNextIdea()

@@ -22,6 +22,18 @@ body{
     left: 50%;
     transform: translateX(-50%) translateY(-50%); /* Centers the element vertically and horizontally, width musth be defined and top and left margins should be given*/
     }
+
+
+#problem-description{
+        font-size: 2vw;
+        display: block;
+        margin: auto;
+        border: solid 2px  #06d6a0;
+        text-align: center;
+        width: 90%;
+        height: 50px;
+        background-color: #06d6a0;
+    }
 #left-button{
     height: 300px;
     float: left;
@@ -51,7 +63,6 @@ body{
     font-size: 3vw;
     margin-top: 5%;
 }
-
 
 .meter { 
     position: absolute;
