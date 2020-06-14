@@ -1,93 +1,123 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Peepee Room</title>
-    </head>
-    <body>
-        <input id="problem-description" type="text" size="100"><br>
-        <textarea readonly id="idea-one" cols="50" rows="20" onclick="vote('one')"></textarea>
-        <textarea readonly id="idea-two" cols="50" rows="20" onclick="vote('two')"></textarea>
-        <textarea readonly id="idea-three" cols="50" rows="20" onclick="vote('three')"></textarea><br>
-        <h3>Check out some other ideas!</h3><br>
-        <div>You have <span id="time">10</span> seconds!</div>
-        {% load static %}  
-        <link rel="stylesheet" href="{% static 'inspiration.css' %}">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script>
-            var token = '{{csrf_token}}';
-            // Loads the first three ideas
-            loadNextIdeas();
+
+<head>
+    <meta charset="utf-8" />
+    <title>Brain Room</title>
+    <link rel="stylesheet" href="{% static 'inspirationn.css' %}">
+
+</head>
+
+<body>
+
+    <input id="problem-description" type="text" size="100"><br>
+    <div id="idea-container">
+        <input type="text" id="idea-one">
+        <input type="text" id="idea-two">
+        <input type="text" id="idea-three">
+    </div>
+    <h3 id="checkideas-text">Check out some other ideas!</h3><br>
+    <div> <span id="time"></span>You have 10 seconds!</div>
+
+    <!-- 
+    <textarea readonly id="idea-one" cols="50" rows="20" onclick="vote('one')"></textarea>
+    <textarea readonly id="idea-two" cols="50" rows="20" onclick="vote('two')"></textarea>
+    <textarea readonly id="idea-three" cols="50" rows="20" onclick="vote('three')"></textarea><br>
+    -->
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        var token = '{{csrf_token}}';
+        // Loads the first three ideas
+        loadNextIdeas();
+        $.ajax({
+            type: 'GET',
+            headers: { "X-CSRFToken": token },
+            url: '/get_question/',
+            data: {
+                room_id: localStorage.getItem('roomId')
+            },
+            success: function (response) {
+                document.querySelector('#problem-description').value = response;
+            },
+        });
+
+        function loadNextIdea(ideaNum) {
+            const idea = document.getElementById("idea-" + ideaNum).value
+
             $.ajax({
                 type: 'GET',
                 headers: { "X-CSRFToken": token },
-                url: '/get_question/',
-                data: {
-                    room_id: localStorage.getItem('roomId')
-                },
-                success: function(response) {
-                    document.querySelector('#problem-description').value = response;
+                url: '/get_response/inspiration',
+                success: function (response) {
+                    currentIdea = response;
+                    if (response == "NULL869" || response == "none")
+                        alert("You are done brainstorming!")
+                    else
+                        document.getElementById("idea-" + ideaNum).value = response;
                 },
             });
+        }
 
-            function getIdeas() {
-                const roomId = localStorage.getItem('roomId');
-                return $.ajax({
-                    type: 'GET',
-                    headers: { "X-CSRFToken": token },
-                    url: '/get_responses/',
-                    data: {
-                        page: 'inspiration',
-                        room_id: roomId,
-                    },
-                    success: function(response) {
-                        if (response == "NULL869" || response == "none")
-                        {
-                            return;
-                        }
-                        return response;
-                    },
-                });
-            }
-
-            async function loadNextIdeas() {
-                const ideaElements = ['idea-one', 'idea-two', 'idea-three'];
-
-                let ideas = await getIdeas();
-                ideas = JSON.parse(ideas);
-
-                // TODO: pick ideas randomly instead of in order
-                // TODO: only get ideas that came from other users
-                for (let i = 0; i < 3; i++) {
-                    if (ideas[i]) {
-                        document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+        function getIdeas() {
+            const roomId = localStorage.getItem('roomId');
+            return $.ajax({
+                type: 'GET',
+                headers: { "X-CSRFToken": token },
+                url: '/get_responses/',
+                data: {
+                    page: 'inspiration',
+                    room_id: roomId,
+                },
+                success: function(response) {
+                    if (response == "NULL869" || response == "none")
+                    {
+                        return;
                     }
+                    return response;
+                },
+            });
+        }
+
+        async function loadNextIdeas() {
+            const ideaElements = ['idea-one', 'idea-two', 'idea-three'];
+
+            let ideas = await getIdeas();
+            ideas = JSON.parse(ideas);
+
+            // TODO: pick ideas randomly instead of in order
+            // TODO: only get ideas that came from other users
+            for (let i = 0; i < 3; i++) {
+                if (ideas[i]) {
+                    document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
                 }
             }
+        }
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
 
-            function startTimer(duration, display) {
-                var timer = duration, minutes, seconds;
-                setInterval(function () {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = seconds; //minutes + ":" + seconds;
+                if (seconds == duration / 2)
+                    loadNextIdeas();
+                if (--timer < 0) {
+                    window.location.pathname = window.location.pathname.split("inspiration")[0] + '2/';
+                }
+            }, 1000);
+        }
 
-                    display.textContent = seconds; //minutes + ":" + seconds;
-                    if (seconds == duration / 2) {
-                        loadNextIdeas();
-                    }
-                    if (--timer < 0) {
-                        window.location.pathname = window.location.pathname.split("inspiration")[0] + '2/';
-                    }
-                }, 1000);
-            }
+        window.onload = function () {
+            display = document.querySelector('#time');
+            startTimer(15, display); //switch to 30 seconds
+        };
+    </script>
+</body>
 
-            window.onload = function () {
-                    display = document.querySelector('#time');
-                startTimer(15, display); //switch to 30 seconds
-            };
-        </script>
-    </body>
 </html>
