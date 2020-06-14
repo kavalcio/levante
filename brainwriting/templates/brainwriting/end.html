@@ -7,13 +7,23 @@
     </head>
     <body>
         <h2>Brainstorming is Complete!</h2><br>
-        <textarea readonly id="ideas" cols="50" rows="20" onclick="vote('one')"></textarea><br>
+        <textarea readonly id="ideas" cols="50" rows="20" onclick="copyFunction()"></textarea><br>
         <button onclick="newSession()"> Start a New Session!</button>
         {{ room_name|json_script:"room-name" }}
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             
+            function copyFunction() {
+                /* Get the text field */
+                var copyText = document.getElementById("ideas");
+
+                /* Select the text field */
+                copyText.select();
+
+                /* Alert the copied text */
+                alert("Copied all ideas: \n" + copyText.value);
+            }
 
             loadIdeas()
             function loadIdeas() {
@@ -28,7 +38,7 @@
                             current = response[0];
                             i=0;
                             while(current!=response[response.length]){
-                                document.getElementById("ideas").value += current.fields.response_text + '\n';
+                                document.getElementById("ideas").value += "[idea "+i+ "]"+current.fields.response_text + '\n \n';
                                 i++;
                                 current = response[i];
                             }
