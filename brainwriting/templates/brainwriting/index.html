@@ -41,7 +41,7 @@
                     localStorage.setItem('roomId', response[0].pk);
 
                     const isTutorial = response[0].fields.is_tutorial === 'True' ? true : false;
-                    localStorage.setItem('isTutorial', isTutorial); // TODO: Is this necessary?
+                    localStorage.setItem('isTutorial', isTutorial);
                     window.location.pathname = '/rooms/' + roomKey + '/admin/create';
                 },
             });
