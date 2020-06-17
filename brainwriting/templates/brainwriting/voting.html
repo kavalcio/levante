@@ -53,7 +53,8 @@
 
             function loadNextIdea(ideaNum, firstRun) {
                 const idea = document.getElementById("idea-"+ideaNum).value
-                if(document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun){
+                const roomId = localStorage.getItem('roomId');
+                if (document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun){
                     $.ajax({
                         type: 'POST',
                         headers: { "X-CSRFToken": token },
@@ -70,12 +71,19 @@
                 $.ajax({
                     type: 'GET',
                     headers: { "X-CSRFToken": token },
-                    url: '/get_response/voting',
+                    url: '/get_responses/',
+                    data: {
+                        page: 'voting',
+                        room_id: roomId,
+                    },
                     success: function(response) {
-                        if(response == "NULL869" || response == "none")
-                            window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
-                        else 
-                            document.getElementById("idea-"+ideaNum).value = response;
+                        if (response == "NULL869" || response == "none") {
+                            return;
+                        } else {
+                            const ideas = JSON.parse(response);
+                            currentIdea =  ideas[0].fields.response_text;
+                            document.getElementById("idea-"+ideaNum).value = currentIdea;
+                        }
                     },
                 });
             }

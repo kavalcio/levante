@@ -45,16 +45,19 @@
         });
         loadNextIdea()
         //loads the next idea from the db and navigates to the next page if no more ideas are available
-        function loadNextIdea() {
+        function loadNextIdea(){
+            const roomId = localStorage.getItem('roomId');
             $.ajax({
                 type: 'GET',
                 headers: { "X-CSRFToken": token },
-                url: '/get_response/nominate',
-                success: function (response) {
-
+                url: '/get_responses/',
+                data: {
+                    page: 'nominate',
+                    room_id: roomId,
+                },
+                success: function(response) {
                     //forward to voting if all ideas have been nominated                        
                     if (response == "NULL869" || response == "None") {
-                        //Reset checks on all objects
                         $.ajax({
                             type: 'POST',
                             url: '/reset_responses/',
@@ -63,14 +66,16 @@
                             },
                         });
                         window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+                    } else {
+                        const ideas = JSON.parse(response);
+                        currentIdea =  ideas[0].fields.response_text;
+                        document.getElementById("idea-current").value = currentIdea;
                     }
-                    else
-                        document.getElementById("idea-current").value = response;
                 },
             });
         }
         //updates the nomination parameter of the response and loads the next idea
-        function nominateIdea() {
+        function nominateIdea(){
             const idea = document.querySelector('#idea-current').value;
             $.ajax({
                 type: 'POST',
@@ -104,9 +109,6 @@
             });
             loadNextIdea()
         }
-
-
     </script>
 </body>
-
 </html>
