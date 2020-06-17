@@ -15,10 +15,6 @@
         <div id="sub-container">
             <h3 id="key-share">Your Key to Share</h3>
             <br>
-            <h2 id="key-no">0424013</h2>
-
-            <!--Commented this input because it wasn't in Tim's mockup. -->
-            <!-- To comment cmnd / -->
 
             <input type="text" value="room code" id="myInput" onclick="copyFunction()"><br>
 
@@ -54,8 +50,12 @@
                     roomKey: roomName,
                 },
                 success: function (response) {
-                    const roomExists = response;
-                    if (roomExists == 1) {
+                    if (response !== 'None') {
+                        const roomObj = JSON.parse(response);
+                        // TODO: make sure user number doesn't already exist
+                        // TODO: keep track of joined users in the backend
+                        localStorage.setItem('roomId', roomObj[0].pk);
+                        localStorage.setItem('isTutorial', roomObj[0].fields.is_tutorial);
                         var user = Math.floor(Math.random() * 100)
                         window.location.pathname = '/rooms/' + roomName + '/' + user + '/1/';
                     } else {
