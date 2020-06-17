@@ -4,13 +4,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Brain Room</title>
+    <title>Brain Room - levanté!</title>
     <link rel="stylesheet" href="{% static 'room.css' %}">
 </head>
 <body>
     <div id="main-container">
-        <!-- TODO: the problem description should not be an input -->
-        <input id="problem-description" type="text" size="100" onclick='clearText()'><br>
+        <input id="problem-description" type="text" size="100" ><br>
         <input id="message-input" type="text" size="100" value="Type your ideas here!" onclick='clearText()'><br>
         <input id="message-submit" type="button" value="Press Enter to Save"><br>
 
@@ -42,6 +41,10 @@
             },
         });
 
+        if (roomNum == 2) {
+            document.querySelector('#message-input').value = "Type any ideas inspired by others here!";
+        }
+
         document.querySelector('#message-input').focus();
         document.querySelector('#message-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
@@ -63,7 +66,7 @@
                     room_id: localStorage.getItem('roomId'),
                 },
                 success: function (response) {
-                    alert(response);
+                    
                 },
             });
         };

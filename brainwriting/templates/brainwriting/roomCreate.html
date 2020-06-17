@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Home Page - levanté!</title>
+    <title>Create Room - levanté!</title>
     <link rel="stylesheet" href="{% static 'roomCreate.css' %}">
 </head>
 <body>
@@ -45,7 +45,7 @@
                     room_id: localStorage.getItem('roomId')
                 },
                 success: function (response) {
-                    alert(response);
+                    
                 },
             });
             window.location.pathname = window.location.pathname.split("create")[0] + "code"

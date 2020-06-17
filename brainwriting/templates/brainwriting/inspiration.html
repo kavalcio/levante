@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Brain Room</title>
+    <title>Inspiration - levanté!</title>
     <link rel="stylesheet" href="{% static 'inspirationn.css' %}">
 
 </head>
@@ -30,6 +30,18 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
         var token = '{{csrf_token}}';
+        //Get problem description
+        $.ajax({
+            type: 'GET',
+            headers: { "X-CSRFToken": token },
+            url: '/get_question/',
+            data: {
+                room_id: localStorage.getItem('roomId')
+            },
+            success: function (response) {
+                document.querySelector('#problem-description').value = response;
+            },
+        });
         // Loads the first three ideas
         loadNextIdeas();
         $.ajax({
