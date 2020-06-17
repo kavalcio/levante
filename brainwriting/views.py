@@ -229,11 +229,51 @@ def create_room(request):
 
 def join_room(request):
     roomKey = request.POST['roomKey']
-    roomExists = Room.objects.filter(room_key=roomKey, active=True).exists()
 
-    if (roomExists):
-        roomExists = 1
+    # If the user wants to start a tutorial, join the existing tutorial room or create a new one
+    if roomKey == 'TUTORIAL':
+        # Create the tutorial room
+        roomObj = Room(
+            room_key = roomKey,
+            active = True,
+            is_tutorial = True
+        )
+        roomObj.save()
+
+        # Create the tutorial question
+        questionObject = Question(
+            room = roomObj,
+            question_text = 'This is the TUTORIAL QUESTION!!!',
+            pub_date = '2000-11-11'
+        )
+        questionObject.save()
+
+        # Create full list of tutorial responses
+        responseList = [
+            'Make the software force people to take turns speaking',
+            'Incorporate gamification to encourage valuable comments',
+            'Have a "meeting notes" feature that the assigned person fills out',
+            'Provide Ice breaker questions or games to participants',
+            'Add a "take a break" feature that pauses the meeting and resumes in 3 minutes',
+            'Display meeting goals on the side of the screen at all times',
+            'Add timers to how long people have to speak and make people "raise their hand" to be unmuted'
+        ]
+        for responseText in responseList:
+            responseObj = Response(
+                room=roomObj,
+                response_text=responseText,
+            )
+            responseObj.save()
+
+        returnVal = serializers.serialize('json', [roomObj])
+            
+        return HttpResponse(returnVal)
     else:
-        roomExists = 0
+        roomObj = Room.objects.filter(room_key=roomKey, active=True)
 
-    return HttpResponse(roomExists)
+        if (roomObj):
+            returnVal = serializers.serialize('json', roomObj)
+        else:
+            returnVal = None
+
+    return HttpResponse(returnVal)
