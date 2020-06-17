@@ -56,8 +56,10 @@
                     roomKey: roomKey,
                 },
                 success: function (response) {
-                    const roomExists = response;
-                    if (roomExists == 1) {
+                    if (response !== 'None') {
+                        const roomObj = JSON.parse(response);
+                        localStorage.setItem('roomId', roomObj[0].pk);
+                        localStorage.setItem('isTutorial', roomObj[0].fields.is_tutorial);
                         var user = Math.floor(Math.random() * 100)
                         window.location.pathname = '/rooms/' + roomKey + '/' + user + '/1/';
                     } else {
