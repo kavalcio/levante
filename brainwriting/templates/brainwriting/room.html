@@ -69,10 +69,9 @@
         };
 
         function clearText() {
-            if (firstRun == true)
+            if (document.querySelector('#message-input').value == "Type your ideas here!" || document.querySelector('#message-input').value == "Type any ideas inspired by others here!")
                 document.querySelector('#message-input').value = ""
 
-            firstRun = false
         }
 
         function startTimer(duration, display) {

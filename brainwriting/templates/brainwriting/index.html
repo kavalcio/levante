@@ -25,7 +25,8 @@
         var token = '{{csrf_token}}';
         //simply clears the text for the Key to be entered
         function clearText() {
-            document.querySelector('#room-name-input').value = ""
+            if( document.querySelector('#room-name-input').value== "Enter Key")
+                document.querySelector('#room-name-input').value = ""
         }
         function createRoom(isTutorial) {
             $.ajax({
