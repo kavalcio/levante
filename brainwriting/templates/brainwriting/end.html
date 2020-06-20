@@ -44,7 +44,11 @@
                 $.ajax({
                     type: 'GET',
                     headers: { "X-CSRFToken": token },
-                    url: '/get_response/end',
+                    url: '/get_responses/',
+                    data: {
+                        page: 'end',
+                        room_id: localStorage.getItem('roomId'),
+                    },
                     dataType: "json",
                     success: function(response) {
                         if(response == "NULL869" || response == "none")
