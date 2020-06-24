@@ -57,7 +57,22 @@
                             current = response[0];
                             i=0;
                             while(current!=response[response.length]){
-                                document.getElementById("ideas").value += "[idea "+i+ "]"+current.fields.response_text + '\n \n';
+                                document.getElementById("ideas").value += "[idea "+i+ "]"+current.fields.response_text
+                                // $.ajax({
+                                //     type: 'GET',
+                                //     headers: { "X-CSRFToken": token },
+                                //     url: '/get_comments/',
+                                //     data: {
+                                //         response_id: response[i].pk,
+                                //     },
+                                //     success: function (result) {
+                                //         const comments = JSON.parse(result);
+                                //         for (index in comments) {
+                                //             document.getElementById("ideas").value += 'comment['+k+'] ' + comments[index]+ '\n';
+                                //         }
+                                //     },
+                                // });
+                                document.getElementById("ideas").value +='\n \n';
                                 i++;
                                 current = response[i];
                             }

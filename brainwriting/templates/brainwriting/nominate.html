@@ -11,7 +11,7 @@
 <body>
     <h1 id="nominate-header">Nominate Ideas </h1>
     <input id="problem-description" type="text" size="100" >
-    <input type="image" name="don't nomniate" id="left-button" value="hey" src="{% static 'images/right-thumb.png' %}" onclick="dontNominateIdea()">
+    <input type="image" name="don't nomniate" id="left-button" value="hey" src="{% static 'images/right-thumb.png' %}" onclick="loadNextIdea()">
     <div id="main-container">
         <input type="text" id="idea-current" value="idea will appear here"></input>
     </div>
@@ -43,11 +43,21 @@
                 document.querySelector('#problem-description').value = response;
             },
         });
-        loadNextIdea()
-        //loads the next idea from the db and navigates to the next page if no more ideas are available
-        function loadNextIdea(){
+
+        let currentIdea = null;
+        let ideas = null;
+        let count = 0;
+        init();
+
+        async function init() {
+            ideas = await getIdeas();
+            ideas = JSON.parse(ideas);
+            length = Object.keys(ideas).length;
+            loadNextIdea();
+        }
+        function getIdeas() {
             const roomId = localStorage.getItem('roomId');
-            $.ajax({
+            return $.ajax({
                 type: 'GET',
                 headers: { "X-CSRFToken": token },
                 url: '/get_responses/',
@@ -56,23 +66,34 @@
                     room_id: roomId,
                 },
                 success: function(response) {
-                    //forward to voting if all ideas have been nominated                        
-                    if (response == "NULL869" || response == "None") {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/reset_responses/',
-                            success: function (response) {
-                                
-                            },
-                        });
-                        window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
-                    } else {
-                        const ideas = JSON.parse(response);
-                        currentIdea =  ideas[0].fields.response_text;
-                        document.getElementById("idea-current").value = currentIdea;
+                    if (response == "NULL869" || response == "none")
+                    {
+                        return;
                     }
+                    return response;
                 },
             });
+        }
+        function loadNextIdea() {
+            for(i=0+count;i<ideas.length;i++){
+                var ideaObj = ideas[i];
+                if(ideaObj.fields.check == 1){
+                    continue;
+                }
+                else if (ideaObj.fields.check == 0){
+                    //ensures we skip the ideas that have already been checked
+                    count = i
+                    break
+                }
+            }
+            
+            if(ideaObj.fields.check == 1)
+                window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+            
+            currentIdea = ideaObj.fields.response_text;
+            document.getElementById("idea-current").value = currentIdea;
+            ideaObj.fields.check = 1
+            currentIdea = ideaObj.fields.response_text;
         }
         //updates the nomination parameter of the response and loads the next idea
         function nominateIdea(){
@@ -92,23 +113,6 @@
             loadNextIdea()
         }
 
-        //updates the nomination parameter of the response and loads the next idea
-        function dontNominateIdea() {
-            const idea = document.querySelector('#idea-current').value;
-            $.ajax({
-                type: 'POST',
-                headers: { "X-CSRFToken": token },
-                url: '/upd_response/',
-                data: {
-                    response: idea,
-                    check: "no"
-                },
-                success: function (response) {
-                    
-                },
-            });
-            loadNextIdea()
-        }
     </script>
 </body>
 </html>
