@@ -34,12 +34,14 @@
 
         let currentIdea = null;
         let ideas = null;
+        let count = 0;
         init();
 
         async function init() {
             ideas = await getIdeas();
             ideas = JSON.parse(ideas);
-            loadNextIdea(true);
+            length = Object.keys(ideas).length;
+            loadNextIdea();
         }
         function getIdeas() {
             const roomId = localStorage.getItem('roomId');
@@ -48,7 +50,7 @@
                 headers: { "X-CSRFToken": token },
                 url: '/get_responses/',
                 data: {
-                    page: 'inspiration',
+                    page: 'development',
                     room_id: roomId,
                 },
                 success: function(response) {
@@ -60,9 +62,25 @@
                 },
             });
         }
-        function loadNextIdea(firstRun) {
-            const ideaObj = ideas[Math.floor(Math.random() * ideas.length)];
+        function loadNextIdea() {
+            for(i=0+count;i<ideas.length;i++){
+                var ideaObj = ideas[i];
+                if(ideaObj.fields.check == 1){
+                    continue;
+                }
+                else if (ideaObj.fields.check == 0){
+                    //ensures we skip the ideas that have already been checked
+                    count = i
+                    break
+                }
+            }
+            if(ideaObj.fields.check == 1)
+                window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
+            
+            
             currentIdea = ideaObj.fields.response_text;
+            document.getElementById("current-idea").value = currentIdea;
+            ideaObj.fields.check = 1
             $.ajax({
                 type: 'GET',
                 headers: { "X-CSRFToken": token },
@@ -72,44 +90,13 @@
                 },
                 success: function (result) {
                     const comments = JSON.parse(result);
-
-                    if(result == "NULL869" || result == "none") {
-                        //Reset checks on all objects
-                        $.ajax({
-                            type: 'POST',
-                            url: '/reset_responses/',
-                            success: function (response) {
-                                
-                            },
-                        });
-                        window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
-                    } else {
-                        document.getElementById("current-idea").value = currentIdea;
-                        for (index in comments) {
-                            document.getElementById("current-idea").value += '\n' + comments[index];
-                        }
+                    for (index in comments) {
+                        document.getElementById("current-idea").value += '\n' + comments[index];
                     }
                 },
             });
-            if (firstRun == false) {
-                ideaDeveloped();
-            }
         }
-        function ideaDeveloped() {
-            const idea = document.querySelector('#current-idea').value;
-            $.ajax({
-                type: 'POST',
-                headers: { "X-CSRFToken": token },
-                url: '/upd_response/',
-                data: {
-                    response: idea,
-                    check: "yes"
-                },
-                success: function (response) {
-                    
-                },
-            });
-        }
+
         function submitComment() {
             comment = document.getElementById("comment-text-input").value;
             document.getElementById("current-idea").value += '\n' + comment;
