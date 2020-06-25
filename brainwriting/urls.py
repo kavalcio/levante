@@ -7,7 +7,6 @@ urlpatterns = [
     path('add_response/', views.add_response, name='add_response'),
     path('get_comments/', views.get_comments, name='get_comments'),
     path('get_responses/', views.get_responses, name='get_responses'),
-    path('reset_responses/', views.reset_responses, name='reset_responses'),
     path('add_comment/', views.add_comment, name='add_comment'),
     path('add_question/', views.add_question, name='add_question'),
     path('get_question/', views.get_question, name='get_question'),

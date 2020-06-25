@@ -25,7 +25,6 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';
-            
             //Get problem description
             $.ajax({
                 type: 'GET',
@@ -38,12 +37,41 @@
                     document.querySelector('#problem-description').value = response;
                 },
             });
-            
-            // Loads the first three ideas
-            loadNextIdea("one", true)
-            loadNextIdea("two", true)
-            loadNextIdea("three", true)
+            let ideas = null;
+            let currentIdea = null;
+            let count = 0;
+            init();
 
+             async function init() {
+                ideas = await getIdeas();
+                ideas = JSON.parse(ideas);
+                length = Object.keys(ideas).length;
+                // Loads the first three ideas
+                loadNextIdea("one", true)
+                loadNextIdea("two", true)
+                loadNextIdea("three", true)
+
+            }
+
+            function getIdeas() {
+                const roomId = localStorage.getItem('roomId');
+                return $.ajax({
+                    type: 'GET',
+                    headers: { "X-CSRFToken": token },
+                    url: '/get_responses/',
+                    data: {
+                        page: 'voting',
+                        room_id: roomId,
+                    },
+                    success: function(response) {
+                        if (response == "NULL869" || response == "none")
+                        {
+                            return;
+                        }
+                        return response;
+                    },
+                });
+            }
             function vote(ideaNum){
                 const idea = document.getElementById("idea-"+ideaNum).value
                     $.ajax({
@@ -64,38 +92,40 @@
             function loadNextIdea(ideaNum, firstRun) {
                 const idea = document.getElementById("idea-"+ideaNum).value
                 const roomId = localStorage.getItem('roomId');
-                if (document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun){
+                if (document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun && document.getElementById("idea-"+ideaNum).value != ""){
                     $.ajax({
                         type: 'POST',
                         headers: { "X-CSRFToken": token },
                         url: '/upd_response/',
                         data: {
-                            response: idea,
-                            check: "no"
+                            response: idea
                         },
                         success: function(response) {
-                            
+                            if(count == ideas.length)
+                                window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
                         },
                     });  
                 }
-                $.ajax({
-                    type: 'GET',
-                    headers: { "X-CSRFToken": token },
-                    url: '/get_responses/',
-                    data: {
-                        page: 'voting',
-                        room_id: roomId,
-                    },
-                    success: function(response) {
-                        if (response == "NULL869" || response == "none") {
-                            return;
-                        } else {
-                            const ideas = JSON.parse(response);
-                            currentIdea =  ideas[0].fields.response_text;
-                            document.getElementById("idea-"+ideaNum).value = currentIdea;
-                        }
-                    },
-                });
+                if(count == ideas.length)
+                    window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
+                currentIdea = ideas[count].fields.response_text;
+                document.getElementById("idea-"+ideaNum).value = currentIdea;
+                // $.ajax({
+                //     type: 'GET',
+                //     headers: { "X-CSRFToken": token },
+                //     url: '/get_comments/',
+                //     data: {
+                //         response_id: ideas[count].pk,
+                //     },
+                //     success: function (result) {
+                //         const comments = JSON.parse(result);
+                //         document.getElementById("idea-"+ideaNum).value += '\n' + "           Developments:";
+                //         for (index in comments) {
+                //             document.getElementById("idea-"+ideaNum).value += '\n' + comments[index];
+                //         }
+                //     },
+                // });
+                count++;
             }
 
             function loadThreeNext(){

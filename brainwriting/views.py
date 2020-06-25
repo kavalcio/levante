@@ -95,29 +95,13 @@ def upd_response(request):
         check = "none"
     responseToUp = request.POST['response']
 
-    if(check == "yes" or check == "nominate" or check == "vote"):
-        temp = Response.objects.get(response_text=responseToUp)
-        if(check == "nominate"):
-            temp.voteNum = 1
-        if(check == "vote"):
-            temp.voteNum = temp.voteNum + 1
-        temp.check = 1 
-        temp.save()
-    elif(check == "no"):
-        temp = Response.objects.get(response_text=responseToUp)
-        temp.check = 2
-        temp.save()       
+    temp = Response.objects.get(response_text=responseToUp)
+    if(check == "nominate"):
+        temp.voteNum = 1
+    if(check == "vote"):
+        temp.voteNum = temp.voteNum + 1   
     
-    return HttpResponse(request.session)
-
-def reset_responses(request):
-    if not request.is_ajax() or not request.method=='POST':
-        return HttpResponseNotAllowed(['POST'])
-
-    for temp in Response.objects.all():
-        temp.check = 0
-        temp.save()  
-
+    temp.save()
     return HttpResponse(request.session)
 
 def add_response(request):
@@ -164,17 +148,15 @@ def get_responses(request):
 
     room = Room.objects.get(room_id = roomId)
 
-    if (page == "nominate" or page == "development"):
-        responses = Response.objects.filter(room = room, check = 0)
-    elif (page == "voting"):
+    if (page == "development" or page == "voting"):
         responses = Response.objects.filter(room = room, voteNum = 1)
     elif(page == "end"):
-        temp = Response.objects.exclude(voteNum = 0)
+        temp = Response.objects.exclude(room = room,voteNum = 0)
         responses = temp.order_by('-voteNum')
     else:
         responses = Response.objects.filter(room = room)
 
-    #sends error code if all ideas have been nominated
+    #sends error code if no ideas were found
     if (not responses):
         return HttpResponse("NULL869")
 
@@ -190,7 +172,6 @@ def add_comment(request):
     comment = request.POST['comment']
 
     responseObj = Response.objects.get(response_text=idea)
-    responseObj.check = 1 
     responseObj.save()
 
     commentObj = Comment(
