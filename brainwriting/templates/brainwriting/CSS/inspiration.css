@@ -1,0 +1,137 @@
+*{  margin: 0;
+    padding: 0;
+    outline: none;
+    color: white;
+
+}body {
+    font-family: helvetica;
+    margin: 0;
+    height: 100%;
+    background-color: #073b4c;
+    overflow: hidden;
+}
+
+
+#problem-description{
+    width: 900px;
+    height: 50px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: #06d6a0;
+    border-radius: 100px;
+    border: solid 2px #06d6a0;
+    font-size: 40px;
+}
+#idea-container{
+    
+    text-align: center;
+}
+
+#idea-one{
+    width: 500px;
+    height: 500px;
+    background-color: yellow;
+    border: solid 10px #06d6a0;
+}
+#idea-two{
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 500px;
+    height: 500px;
+    background-color: yellow;
+    border: solid 10px #06d6a0;
+}
+#idea-three{
+   width: 500px;
+   height: 500px;
+   background-color: yellow;
+   border: solid 10px #06d6a0;
+}
+#problem-description-text-center{
+    text-align: center;
+}
+#check-ideas-text-center{
+    text-align: center;
+}
+#checkideas-text{
+    margin-top: 90px;
+    text-align: center;
+    font-size: xx-large;
+}
+#timer-div{  
+    display: table-cell;
+    width: 100px;
+    height: 100px;
+    background-image: url("../images/timer.gif");   
+    background-size: cover;
+    text-align: center;
+    vertical-align: middle;
+    text-align: center;
+}
+#time{
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.meter{
+    width: 90%;
+    margin-top: 50px;
+    height: 40px;  /* Can be anything */
+	position: relative;
+    padding: 10px;
+    margin-left: 5%;
+
+}
+.meter > span {
+    display: block;
+    height: 100%;
+    background-color: rgb(43,194,83);
+    background-image: linear-gradient(
+      center bottom,
+      rgb(43,194,83) 37%,
+      rgb(84,240,84) 69%
+    );
+    box-shadow: 
+      inset 0 2px 9px  rgba(255,255,255,0.3),
+      inset 0 -2px 6px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;    
+  }
+  @media only screen and (max-height: 800px) {
+
+    #idea-one{
+        width: 250px;
+        height: 250px;
+
+    }
+    #idea-two{
+        width: 250px;
+        height: 250px;
+
+    }
+    #idea-three{
+        width: 250px;
+        height: 250px;
+
+    }
+}
+@media only screen and (max-width: 1600px) {
+ 
+    #idea-one{
+        width: 350px;
+        height: 350px;
+
+    }
+    #idea-two{
+        width: 350px;
+        height: 350px;
+
+    }
+    #idea-three{
+        width: 350px;
+        height: 350px;
+    }
+
+}

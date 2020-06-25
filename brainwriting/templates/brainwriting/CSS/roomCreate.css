@@ -13,55 +13,35 @@ html,body {
 }
 
 
-#main-container{
-    width: 92.5%;
-    height: 100%;
-    display: block;
-    margin: auto;
-
- 
+#problem-description-center{
+    text-align: center;
 }
-
 #problem-description{
     background-color: #f36c6d;
-    width: 90%;
-    height: 300px;
-    margin-left: 3.75%;
+    width: 80%;
+    height: 500px;
     text-align: center;
-    font-size: xx-large;
-    position: absolute;
+    font-size: 2.7vw;
     border: solid 15px #06d6a0;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    word-wrap: break-word;
+    word-break: break-all;
+}
+#create-button-center{
+    text-align: center;
 }
 #create-button{
-    font-size: 2vw;
+    font-size: 30px;
     text-align: center;
-    height: 50px;
-    width: 40%;
+    height: 70px;
+    width: 50%;
     border-radius: 100px;
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
-    margin-left: 30%;
-    margin-top: 30%;
+    margin-top: 300px;
+
 }
 
 
-#levante-text{
-    font-size: 3vw;
-}
-
-
-#button-container{
-    width:50%;
-    text-align: center;
-    margin-left:25%;
-    position: absolute;
-    top: 90%;
-    -ms-transform: translateY(-80%);
-    transform: translateY(-80%);
-}
 #create-room{
     font-size: x-large;
     background-color: #06d6a0;
@@ -79,3 +59,4 @@ html,body {
     text-align: center;
 
 }
+

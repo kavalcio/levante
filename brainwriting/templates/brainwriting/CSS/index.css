@@ -13,39 +13,37 @@ body{
     margin: auto;
     max-width: 100%;
     max-height: 100%;
-    width: 65%;
+    width: 650px;
 }
 #main-container{
     display: block;
     width: 50%;
-    height: 100%;
     margin-left: 25%;
     position: fixed;
 }
 
 /*Above code works fine if you delete sub container div from html*/
-#sub-container{
+/*Change all % size values to pixels and use media queries instead*/
+#inputs-inside-image{
     text-align: center;
-    margin-top: -50%;
-    width: 100%;
+    margin-top: -400px;
+
 }
 #room-name-input{
-    
-    margin-top: 40px;
-    font-size: 2vw;
+    font-size: 20px;
     text-align: center;
     height: 40px;
-    width: 35%;
+    width: 350px;
     border-radius: 100px;
     background-color: #073b4c;
     border: solid 2px #073b4c;
-    margin-bottom: 1%;
+    margin-bottom: 10px;
 }
 #room-name-submit{
-    font-size: 2vw;
+    font-size: 20px;
     text-align: center;
     height: 40px;
-    width: 30%;
+    width: 350px;
     border-radius: 100px;
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
@@ -53,13 +51,14 @@ body{
 
 }
 #bottom-inputs{
-    margin-top: 200px;
+    text-align: center;
+    margin-top: 300px;
 }
 #log-in{
-    font-size: 2vw;
+    font-size: 20px;
     text-align: center;
     height: 35px;
-    width: 40%;
+    width: 350px;
     border-radius: 100px;
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
@@ -67,11 +66,30 @@ body{
 
 }
 #create-room{
-    font-size: 2vw;
+    font-size: 20px;
     text-align: center;
     height: 35px;
-    width: 40%;
+    width: 350px;
     border-radius: 100px;
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
+}
+
+
+
+@media only screen and (max-width: 1300px) {
+
+    #inputs-inside-image{
+        text-align: center;
+        margin-top: -300px;
+    
+    }
+    #room-name-input{
+        height: 40px;
+        width: 200px;
+    }
+    #room-name-submit{
+        height: 40px;
+        width: 200px;
+    }
 }

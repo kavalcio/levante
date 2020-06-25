@@ -1,17 +1,27 @@
+{% load static %}
 <html>
     <head>
         <head>
             <meta charset="utf-8"/>
             <title>Voting - levanté!</title>
+            <link rel="stylesheet" href="{% static 'voting.css' %}">
         </head>
     </head>
     <body>
         <h2>Vote For In Person Discussion!</h2><br>
         <input id="problem-description" type="text" size="100" ><br>
-        <textarea readonly id="idea-one" cols="50" rows="20" onclick="vote('one')"></textarea>
-        <textarea readonly id="idea-two" cols="50" rows="20" onclick="vote('two')"></textarea>
-        <textarea readonly id="idea-three" cols="50" rows="20" onclick="vote('three')"></textarea><br>
-        <button onclick="loadThreeNext()"> Next Ideas</button>
+        <div id="votes-center">
+            <textarea readonly id="idea-one" cols="50" rows="20" onclick="vote('one')"></textarea>
+            <textarea readonly id="idea-two" cols="50" rows="20" onclick="vote('two')"></textarea>
+            <textarea readonly id="idea-three" cols="50" rows="20" onclick="vote('three')"></textarea><br>
+        </div>
+        <div id="next-idea-button-center">
+            <button onclick="loadThreeNext()"> Next Ideas</button>
+        </div>
+        <div class="meter">
+            <span style="width: 80%"></span>
+        </div>
+
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';

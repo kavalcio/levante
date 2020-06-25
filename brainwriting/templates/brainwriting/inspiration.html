@@ -5,20 +5,29 @@
 <head>
     <meta charset="utf-8" />
     <title>Inspiration - levanté!</title>
-    <link rel="stylesheet" href="{% static 'inspirationn.css' %}">
+    <link rel="stylesheet" href="{% static 'inspiration.css' %}">
 
 </head>
 
 <body>
-
-    <input id="problem-description" type="text" size="100"><br>
+    <div id="problem-description-text-center">
+        <input id="problem-description" type="text" size="100">
+        <br>
+    </div>
     <div id="idea-container">
         <input type="text" id="idea-one">
         <input type="text" id="idea-two">
         <input type="text" id="idea-three">
     </div>
-    <h3 id="checkideas-text">Check out some other ideas!</h3><br>
-    <div>You have <span id="time">30</span> seconds!</div>
+    <div id="check-ideas-text-center">
+        <h3 id="checkideas-text">Check out some other ideas!</h3>
+        <br>
+    </div>
+    <div id="timer-div"> <span id="time">10</span> </div>
+    <div class="meter">
+        <span style="width: 40%"></span>
+    </div>
+
 
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

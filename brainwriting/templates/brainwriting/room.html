@@ -15,7 +15,10 @@
 
     </div>
 
-    <div>You have <span id="time">30</span> seconds!</div>
+    <div id="timer-center">
+        You have <span id="time">30</span> seconds!
+    </div>
+
     {{ room_name|json_script:"room-name" }}
     {{ user_name|json_script:"user-name" }}
     {{ room_num|json_script:"room-num" }}
