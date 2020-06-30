@@ -19,7 +19,7 @@
             <input id="create-room" type="button" value="Create New Room">
         </div>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
         var token = '{{csrf_token}}';
         //simply clears the text for the Key to be entered
@@ -76,10 +76,6 @@
             var roomName = document.querySelector('#room-name-input').value;
             joinRoom(roomName);
         }
-        document.querySelector('#start-tutorial').onclick = async function(e) {
-            const isTutorial = true;
-            createRoom(isTutorial);
-        };
     </script>
 </body>
 </html>

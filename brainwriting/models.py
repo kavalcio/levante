@@ -6,7 +6,7 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_key = models.CharField(max_length=20)
     active = models.BooleanField()
-    is_tutorial = models.BooleanField(default=False)
+    is_tutorial = models.BooleanField(null=True, default=False)
 
     def __str__(self):
         return str(self.room_id)
