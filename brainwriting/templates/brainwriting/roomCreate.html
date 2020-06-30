@@ -51,10 +51,9 @@
                     room_id: localStorage.getItem('roomId')
                 },
                 success: function (response) {
-                    
+                    window.location.pathname = window.location.pathname.split("create")[0] + "code"
                 },
             });
-            window.location.pathname = window.location.pathname.split("create")[0] + "code"
         }
 
         initializeText();

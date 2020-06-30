@@ -151,7 +151,8 @@ def get_responses(request):
     if (page == "development" or page == "voting"):
         responses = Response.objects.filter(room = room, voteNum = 1)
     elif(page == "end"):
-        temp = Response.objects.exclude(room = room,voteNum = 0)
+        temp = Response.objects.filter(room = room)
+        temp = Response.objects.exclude(voteNum = 0)
         responses = temp.order_by('-voteNum')
     else:
         responses = Response.objects.filter(room = room)
