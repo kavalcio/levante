@@ -1,0 +1,39 @@
+*{
+    outline: none;
+}
+body{
+    font-family: helvetica;
+    color: white;
+    background-color: #073b4c;
+    overflow: hidden;
+}
+
+#ideas{
+    margin-top: 3000 / 2;
+    text-align: center;
+    border: solid 10px #f36c6d;
+    background-color: #06d6a0 ;
+}
+#center-ideas{
+    text-align: center;
+}
+#center-header{
+    font-size: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+#center-button{
+    margin-top: 30px;
+    text-align: center;
+}
+#newSessButton{
+    font-size: 20px;
+    text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+    margin-bottom: 50px;
+
+}

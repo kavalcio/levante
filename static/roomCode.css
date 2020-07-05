@@ -1,0 +1,136 @@
+*{  margin: 0;
+    padding: 0;
+    outline: none;
+    color: white;
+}
+body{
+    font-family: helvetica;
+    background-color: #073b4c;
+    overflow: hidden;
+}
+#logo-image{
+    text-align: center;
+    max-width: 100%;
+    max-height: 100%;
+    width: 650px;
+}
+#main-container{
+    margin-top: 30px;
+    text-align: center;
+    width: 50%;
+    height: 100%;
+    margin-left: 25%;
+}
+
+/*Above code works fine if you delete sub container div from html*/
+#sub-container{
+    text-align: center;
+    margin-top: -450px;
+    width: 100%;
+}
+#center-myInput{
+    text-align: center;
+}
+#myInput{
+    font-size: 20px;
+    text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+}
+#enter-room-center{
+    text-align: center;
+}
+#join-room{
+    margin-top: 50px;
+    font-size: 20px;
+    text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+}
+#key-share{
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 50px;
+}
+#key-no{
+    color:black;
+    font-size: 60px;
+    margin-bottom: 50px;
+}
+#bottom-inputs{
+    margin-top: 150px;
+}
+@media only screen and (max-width: 1300px) {
+ 
+    #sub-container{
+        margin-top: -350px;
+    }
+    #key-share{
+        font-size: 30px;
+    }
+    #key-no{
+        font-size: 30px;
+
+    }
+    #myInput{
+        width: 200px;
+    }
+}
+@media only screen and (max-width: 800px) {
+ 
+    #sub-container{
+        margin-top: -300px;
+    }
+    #key-share{
+        font-size: 25px;
+    }
+    #key-no{
+        font-size: 30px;
+
+    }
+    #myInput{
+        height: 30px;
+        width: 200px;
+    }
+}
+@media only screen and (max-width: 700px) {
+   
+    #sub-container{
+        margin-top: -270px;
+    }
+    #key-share{
+        margin-top: 50px;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+    #key-no{
+        font-size: 20px;
+
+    }
+    #myInput{
+        height: 30px;
+        width: 150px;
+    }
+}
+@media only screen and (max-height: 1000px){
+    #logo-image{
+        width: 350px;
+    }
+    #sub-container{
+        text-align: center;
+        margin-top: -250px;
+        width: 100%;
+    }
+    #key-share{
+        font-size: 25px;
+    }
+    #key-no{
+        font-size: 35px;
+    }
+}

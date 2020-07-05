@@ -1,0 +1,70 @@
+*{  
+    outline: none;
+    color: white;
+}
+html,body {
+    font-family: helvetica;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #073b4c;
+    overflow: hidden;
+    color: white;
+}
+
+
+#problem-description-center{
+    text-align: center;
+}
+#problem-description{
+    background-color: #f36c6d;
+    width: 80%;
+    height: 500px;
+    text-align: center;
+    font-size: 2.7vw;
+    border: solid 15px #06d6a0;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+#create-button-center{
+    text-align: center;
+}
+#create-button{
+    font-size: 30px;
+    text-align: center;
+    height: 70px;
+    width: 50%;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+    margin-top: 300px;
+
+}
+
+
+#create-room{
+    font-size: x-large;
+    background-color: #06d6a0;
+    width: 70%;
+    height: 70px;
+    border-radius: 100px;
+}
+#levante-text{
+    font-style: italic;
+    font-size: 500%;
+    background: -webkit-linear-gradient(#118ab2, #097497);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 5%;
+    text-align: center;
+
+}
+
+@media only screen and (max-height: 1000px){
+    #problem-description{
+        height: 300px;
+    }
+    #create-button{
+        margin-top: 50px;
+    }
+}

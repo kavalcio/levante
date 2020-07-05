@@ -1,0 +1,119 @@
+*{  margin: 0;
+    padding: 0;
+    outline: none;
+    color: white;
+
+}
+body{
+    background-color: #073b4c;
+    overflow: hidden;
+}
+#logo-image{
+    display:block;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    width: 650px;
+}
+#main-container{
+    margin-top: 30px;
+    display: block;
+    width: 50%;
+    margin-left: 25%;
+    position: fixed;
+}
+
+/*Above code works fine if you delete sub container div from html*/
+/*Change all % size values to pixels and use media queries instead*/
+#inputs-inside-image{
+    text-align: center;
+    margin-top: -400px;
+
+}
+#room-name-input{
+    font-size: 20px;
+    text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #073b4c;
+    border: solid 2px #073b4c;
+    margin-bottom: 10px;
+}
+#room-name-submit{
+    font-size: 20px;
+    text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+    margin-bottom: 50px;
+
+}
+#bottom-inputs{
+    text-align: center;
+    margin-top: 300px;
+}
+#log-in{
+    font-size: 20px;
+    text-align: center;
+    height: 35px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+    margin-bottom: 1%;
+
+}
+#create-room{
+    font-size: 20px;
+    text-align: center;
+    height: 35px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+}
+
+
+
+@media only screen and (max-width: 1300px) {
+
+    #inputs-inside-image{
+        text-align: center;
+        margin-top: -300px;
+    
+    }
+    #room-name-input{
+        height: 40px;
+        width: 200px;
+    }
+    #room-name-submit{
+        height: 40px;
+        width: 200px;
+    }
+}
+
+@media only screen and (max-height: 850px){
+    #logo-image{
+        width: 350px;
+    }
+    #room-name-input{
+        height: 40px;
+        width: 200px;
+    }
+    #room-name-submit{
+        height: 40px;
+        width: 200px;
+    }
+    #inputs-inside-image{
+        text-align: center;
+        margin-top: -250px;
+    
+    }
+    #bottom-inputs{
+        text-align: center;
+        margin-top: 200px;
+    }
+}

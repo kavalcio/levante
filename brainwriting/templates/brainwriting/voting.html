@@ -21,21 +21,9 @@
             <span style="width: 80%"></span>
         </div>
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
             var token = '{{csrf_token}}';
-            //Get problem description
-            $.ajax({
-                type: 'GET',
-                headers: { "X-CSRFToken": token },
-                url: '/get_question/',
-                data: {
-                    room_id: localStorage.getItem('roomId')
-                },
-                success: function (response) {
-                    document.querySelector('#problem-description').value = response;
-                },
-            });
             let ideas = null;
             let currentIdea = null;
             let count = 0;
