@@ -54,7 +54,7 @@ body{
     display: table-cell;
     width: 100px;
     height: 100px;
-    background-image: url("../images/timer.gif");   
+    background-image: url("./images/timer.gif");   
     background-size: cover;
     vertical-align: middle;
     text-align: center;
