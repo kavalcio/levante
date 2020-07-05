@@ -6,6 +6,7 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_key = models.CharField(max_length=20)
     active = models.BooleanField()
+    user_list = models.TextField(default='{}')
     is_tutorial = models.BooleanField(null=True, default=False)
 
     def __str__(self):
@@ -31,6 +32,7 @@ class Response(models.Model):
     response_text = models.CharField(max_length=200)
     check = models.IntegerField(default=0)
     voteNum = models.IntegerField(default=0)
+    user_id = models.IntegerField()
     def __str__(self):
         return self.response_text
 

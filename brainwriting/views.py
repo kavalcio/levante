@@ -113,6 +113,7 @@ def add_response(request):
     responseObj = Response(
         room=roomObj,
         response_text=request.POST['message'],
+        user_id=request.POST['user_id'],
     )
 
     responseObj.save()
@@ -151,8 +152,7 @@ def get_responses(request):
     if (page == "development" or page == "voting"):
         responses = Response.objects.filter(room = room, voteNum = 1)
     elif(page == "end"):
-        temp = Response.objects.filter(room = room)
-        temp = Response.objects.exclude(voteNum = 0)
+        temp = Response.objects.filter(room = room).exclude(voteNum = 0)
         responses = temp.order_by('-voteNum')
     else:
         responses = Response.objects.filter(room = room)
@@ -225,7 +225,7 @@ def join_room(request):
         # Create the tutorial question
         questionObject = Question(
             room = roomObj,
-            question_text = 'This is the TUTORIAL QUESTION!!!',
+            question_text = 'How might we make video conferencing meetings shorter and more effective through software changes?',
             pub_date = '2000-11-11'
         )
         questionObject.save()
@@ -244,6 +244,7 @@ def join_room(request):
             responseObj = Response(
                 room=roomObj,
                 response_text=responseText,
+                user_id='-1',
             )
             responseObj.save()
 
@@ -259,3 +260,23 @@ def join_room(request):
             returnVal = None
 
     return HttpResponse(returnVal)
+
+def add_user_to_room(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    roomId = request.POST['room_id']
+    room = Room.objects.get(room_id = roomId)
+    roomUserList = json.loads(room.user_list)
+
+    userId = get_random_string(length = 2, allowed_chars = (string.digits))
+
+    while (userId in roomUserList):
+        userId = get_random_string(length = 2, allowed_chars = (string.digits))
+
+    roomUserList[len(roomUserList)] = userId
+    roomUserList = json.dumps(roomUserList)
+    room.user_list = roomUserList
+    room.save()
+
+    return HttpResponse(userId)

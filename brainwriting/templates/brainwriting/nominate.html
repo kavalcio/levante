@@ -60,9 +60,11 @@
             });
         }
         function loadNextIdea() {
+            const userId = localStorage.getItem('userId');
+
             for(i=0+count;i<ideas.length;i++){
                 var ideaObj = ideas[i];
-                if(ideaObj.fields.check == 1){
+                if(ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId){
                     continue;
                 }
                 else if (ideaObj.fields.check == 0){
@@ -71,8 +73,9 @@
                     break
                 }
             }
-            
-            if(ideaObj.fields.check == 1)
+
+            // TODO: we can see an idea that shouldn't be visible for a split second, fix this
+            if(ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId)
                 window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
             
             currentIdea = ideaObj.fields.response_text;
