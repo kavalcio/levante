@@ -7,7 +7,16 @@ body{
     background-color: #073b4c;
     overflow: hidden;
 }
-
+#problem-description{
+    font-size: 40px;
+    display: block;
+    margin: auto;
+    border: solid 2px  #06d6a0;
+    text-align: center;
+    width: 90%;
+    height: fit-content;
+    background-color: #06d6a0;
+}
 #ideas{
     margin-top: 3000 / 2;
     text-align: center;
@@ -26,7 +35,7 @@ body{
     margin-top: 30px;
     text-align: center;
 }
-#newSessButton{
+#new-session-button{
     font-size: 20px;
     text-align: center;
     height: 40px;
@@ -35,5 +44,9 @@ body{
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
     margin-bottom: 50px;
-
+    cursor: pointer;
+}
+#new-session-button:hover{
+    background-color: #05a87d;
+    border: solid 2px #05a87d;
 }

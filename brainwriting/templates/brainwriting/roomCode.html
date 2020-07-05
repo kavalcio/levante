@@ -16,9 +16,8 @@
         <img id="logo-image" src="{%  static 'images/logo.png' %}" alt="">
         <div id="sub-container">
             <h3 id="key-share">Your Key to Share</h3>
-            <br>
 
-            <input type="text" value="room code" id="myInput" onclick="copyFunction()"><br>
+            <input type="text" value="room code" id="room-code" onclick="copyFunction()"><br>
 
             {{ room_name|json_script:"room-name" }}
         </div>
@@ -34,9 +33,9 @@
         var token = '{{csrf_token}}';
         // update room code  
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        document.getElementById("myInput").value = roomName;
+        document.getElementById("room-code").value = roomName;
         document.querySelector('#join-room').onclick = function (e) {
-            var roomName = document.querySelector('#myInput').value;
+            var roomName = document.querySelector('#room-code').value;
             // TODO: use imported function instead
             // RoomHelpers.joinRoom(roomName);
             joinRoom(roomName);
@@ -44,10 +43,11 @@
         //called when copy button is clicked to copy text to clipboard and create a popup 
         function copyFunction() {
             /* Get the text field */
-            var copyText = document.getElementById("myInput");
+            var copyText = document.getElementById("room-code");
 
             /* Select the text field */
             copyText.select();
+            document.execCommand('copy');
 
             /* Alert the copied text */
             alert("Copied link: " + copyText.value);

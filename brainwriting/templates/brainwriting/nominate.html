@@ -12,7 +12,7 @@
     <h1 id="nominate-header">Nominate Ideas For Further Discussion</h1>
     <input type="image" name="don't nomniate" id="left-button" value="hey" src="{% static 'images/right-thumb.png' %}" onclick="loadNextIdea()">
     <div id="main-container">
-        <input type="text" id="idea-current" value="idea will appear here"></input>
+        <div type="text" id="idea-current" value="idea will appear here"></div>
     </div>
     <input type="image" name="nominate" id="right-button" src="{% static 'images/left-thumb.png' %}" onclick="nominateIdea()">
 
@@ -79,13 +79,13 @@
                 window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
             
             currentIdea = ideaObj.fields.response_text;
-            document.getElementById("idea-current").value = currentIdea;
+            document.getElementById("idea-current").innerHTML = currentIdea;
             ideaObj.fields.check = 1
             currentIdea = ideaObj.fields.response_text;
         }
         //updates the nomination parameter of the response and loads the next idea
         function nominateIdea(){
-            const idea = document.querySelector('#idea-current').value;
+            const idea = document.querySelector('#idea-current').innerHTML;
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },

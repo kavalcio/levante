@@ -38,9 +38,12 @@ html,body {
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
     margin-top: 300px;
-
+    cursor: pointer;
 }
-
+#create-button:hover{
+    background-color: #05a87d;
+    border: solid 2px #05a87d;
+}
 
 #create-room{
     font-size: x-large;

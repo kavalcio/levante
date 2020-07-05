@@ -40,7 +40,7 @@ body{
     border: solid 2px #073b4c;
     margin-bottom: 10px;
 }
-#room-name-submit{
+.button{
     font-size: 20px;
     text-align: center;
     height: 40px;
@@ -48,35 +48,17 @@ body{
     border-radius: 100px;
     background-color: #06d6a0;
     border: solid 2px #06d6a0;
-    margin-bottom: 50px;
-
+    margin: 5px;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #05a87d;
+    border: solid 2px #05a87d;
 }
 #bottom-inputs{
     text-align: center;
     margin-top: 300px;
 }
-#log-in{
-    font-size: 20px;
-    text-align: center;
-    height: 35px;
-    width: 350px;
-    border-radius: 100px;
-    background-color: #06d6a0;
-    border: solid 2px #06d6a0;
-    margin-bottom: 1%;
-
-}
-#create-room{
-    font-size: 20px;
-    text-align: center;
-    height: 35px;
-    width: 350px;
-    border-radius: 100px;
-    background-color: #06d6a0;
-    border: solid 2px #06d6a0;
-}
-
-
 
 @media only screen and (max-width: 1300px) {
 

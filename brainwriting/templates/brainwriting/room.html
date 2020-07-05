@@ -9,7 +9,13 @@
 </head>
 <body>
     <div id="main-container">
-        <input id="problem-description" type="text" size="100" ><br>
+        <div
+            id="problem-description"
+            type="text"
+            size="100"
+        >
+        </div>
+        <br>
         <input id="message-input" type="text" size="100" value="Type your ideas here!" onclick='clearText()'><br>
         <input id="message-submit" type="button" value="Press Enter to Save"><br>
 
@@ -40,7 +46,7 @@
                 room_id: localStorage.getItem('roomId')
             },
             success: function (response) {
-                document.querySelector('#problem-description').value = response;
+                document.querySelector('#problem-description').innerHTML = response;
             },
         });
 
@@ -73,6 +79,7 @@
                     
                 },
             });
+            messageInputDom.value = '';
         };
 
         function clearText() {

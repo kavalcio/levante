@@ -20,7 +20,15 @@ body{
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%); /* Centers the element vertically and horizontally, width musth be defined and top and left margins should be given*/
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #f36c6d;
+    text-align: center;
+    vertical-align: middle;
+    align-content: center;
+    border: solid 10px #06d6a0;
     }
 #left-button{
     height: 300px;
@@ -41,10 +49,9 @@ body{
 #idea-current{
     width: 100%;
     height: 100%;
-    background-color: #f36c6d;
     text-align: center;
+    vertical-align: middle;
     font-size: 50px;
-    border: solid 10px #06d6a0;
 }
 #nominate-header{
     text-align: center;
