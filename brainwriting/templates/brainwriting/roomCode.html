@@ -6,6 +6,8 @@
     <meta charset="utf-8" />
     <title>Room Code - levanté!</title>
     <link rel="stylesheet" href="{% static 'roomCode.css' %}">
+    <!-- TODO: get this import working -->
+    <!-- <script src="../../static/helpers/RoomHelpers.js" type="text/javascript"></script> -->
 </head>
 
 <body>
@@ -20,8 +22,9 @@
 
             {{ room_name|json_script:"room-name" }}
         </div>
+
         <div id="enter-room-center">
-            <input id="join-room" type="button" value="Enter Room" onclick="joinRoom()">
+            <input id="join-room" type="button" value="Enter Room"">
         </div>
 
     </div>
@@ -32,6 +35,12 @@
         // update room code  
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         document.getElementById("myInput").value = roomName;
+        document.querySelector('#join-room').onclick = function (e) {
+            var roomName = document.querySelector('#myInput').value;
+            // TODO: use imported function instead
+            // RoomHelpers.joinRoom(roomName);
+            joinRoom(roomName);
+        }
         //called when copy button is clicked to copy text to clipboard and create a popup 
         function copyFunction() {
             /* Get the text field */
@@ -43,23 +52,35 @@
             /* Alert the copied text */
             alert("Copied link: " + copyText.value);
         }
-        function joinRoom() {
+        function joinRoom(roomKey) {
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },
                 url: '/join_room/',
                 data: {
-                    roomKey: roomName,
+                    roomKey: roomKey,
                 },
                 success: function (response) {
                     if (response !== 'None') {
                         const roomObj = JSON.parse(response);
-                        // TODO: make sure user number doesn't already exist
-                        // TODO: keep track of joined users in the backend
                         localStorage.setItem('roomId', roomObj[0].pk);
                         localStorage.setItem('isTutorial', roomObj[0].fields.is_tutorial);
-                        var user = Math.floor(Math.random() * 100)
-                        window.location.pathname = '/rooms/' + roomName + '/' + user + '/1/';
+
+                        // Find a new unique user id and add it to the list
+                        const userList = JSON.parse(roomObj[0].fields.user_list, true)
+                        let userId;
+                        $.ajax({
+                            type: 'POST',
+                            headers: { "X-CSRFToken": token },
+                            url: '/add_user_to_room/',
+                            data: {
+                                room_id: roomObj[0].pk,
+                            },
+                            success: function (userId) {
+                                localStorage.setItem('userId', userId);
+                                window.location.pathname = '/rooms/' + roomKey + '/' + userId + '/1/';
+                            }
+                        });
                     } else {
                         alert('room not found');
                     }

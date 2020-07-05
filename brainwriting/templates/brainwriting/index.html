@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title>Home Page - levanté!</title>
     <link rel="stylesheet" href="{% static 'index.css' %}">
+    <!-- TODO: get this import working -->
+    <!-- <script src="../../static/helpers/RoomHelpers.js" type="text/javascript"></script> -->
 </head>
 
 <body>
@@ -46,6 +48,16 @@
                 },
             });
         }
+
+        document.querySelector('#create-room').onclick = async function (e) {
+            createRoom();
+        };
+        document.querySelector('#room-name-submit').onclick = function (e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            // TODO: use imported function instead
+            // RoomHelpers.joinRoom(roomName);
+            joinRoom(roomName);
+        }
         function joinRoom(roomKey) {
             $.ajax({
                 type: 'POST',
@@ -59,27 +71,28 @@
                         const roomObj = JSON.parse(response);
                         localStorage.setItem('roomId', roomObj[0].pk);
                         localStorage.setItem('isTutorial', roomObj[0].fields.is_tutorial);
-                        var user = Math.floor(Math.random() * 100)
-                        window.location.pathname = '/rooms/' + roomKey + '/' + user + '/1/';
+
+                        // Find a new unique user id and add it to the list
+                        const userList = JSON.parse(roomObj[0].fields.user_list, true)
+                        let userId;
+                        $.ajax({
+                            type: 'POST',
+                            headers: { "X-CSRFToken": token },
+                            url: '/add_user_to_room/',
+                            data: {
+                                room_id: roomObj[0].pk,
+                            },
+                            success: function (userId) {
+                                localStorage.setItem('userId', userId);
+                                window.location.pathname = '/rooms/' + roomKey + '/' + userId + '/1/';
+                            }
+                        });
                     } else {
                         alert('room not found');
                     }
                 },
             });
         }
-
-        document.querySelector('#create-room').onclick = async function (e) {
-            createRoom();
-        };
-        document.querySelector('#room-name-submit').onclick = function (e) {
-            // Check if room exists
-            var roomName = document.querySelector('#room-name-input').value;
-            joinRoom(roomName);
-        }
-        document.querySelector('#start-tutorial').onclick = async function(e) {
-            const isTutorial = true;
-            createRoom(isTutorial);
-        };
     </script>
 </body>
 </html>

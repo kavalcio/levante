@@ -70,13 +70,14 @@
 
         async function loadNextIdeas() {
             const ideaElements = ['idea-one', 'idea-two', 'idea-three'];
+            const userId = localStorage.getItem('userId');
 
             let ideas = await getIdeas();
             ideas = JSON.parse(ideas);
             // TODO: pick ideas randomly instead of in order
             // TODO: only get ideas that came from other users
             for (let i = 0; i < 3 ; i++) {
-                if (ideas[i]) {
+                if (ideas[i] && ideas[i].fields.user_id != userId) {
                     document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
                 }
             }

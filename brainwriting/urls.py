@@ -13,6 +13,7 @@ urlpatterns = [
     path('upd_response/', views.upd_response, name='upd_response'),
     path('create_room/', views.create_room, name='create_room'),
     path('join_room/', views.join_room, name='join_room'),
+    path('add_user_to_room/', views.add_user_to_room, name='add_user_to_room'),
 
     path('<str:room_name>/admin/create', views.roomCreate, name='roomCreate'),
     path('<str:room_name>/admin/code', views.roomCode, name='roomCode'),
