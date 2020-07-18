@@ -93,9 +93,9 @@ def upd_response(request):
         check = request.POST['check']
     else:
         check = "none"
-    responseToUp = request.POST['response']
+    responseToUp = request.POST['response_id']
 
-    temp = Response.objects.get(response_text=responseToUp)
+    temp = Response.objects.get(pk=responseToUp)
     if(check == "nominate"):
         temp.voteNum = 1
     if(check == "vote"):
@@ -172,7 +172,7 @@ def add_comment(request):
     idea = request.POST['idea']
     comment = request.POST['comment']
 
-    responseObj = Response.objects.get(response_text=idea)
+    responseObj = Response.objects.get(pk=idea)
     responseObj.save()
 
     commentObj = Comment(

@@ -62,36 +62,34 @@
         function loadNextIdea() {
             const userId = localStorage.getItem('userId');
 
-            for(i=0+count;i<ideas.length;i++){
+            for (i = 0+count; i<ideas.length; i++){
                 var ideaObj = ideas[i];
-                if(ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId){
+                if (ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId){
                     continue;
-                }
-                else if (ideaObj.fields.check == 0){
+                } else if (ideaObj.fields.check == 0){
                     //ensures we skip the ideas that have already been checked
-                    count = i
-                    break
+                    count = i;
+                    break;
                 }
             }
 
             // TODO: we can see an idea that shouldn't be visible for a split second, fix this
-            if(ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId)
+            if (ideaObj.fields.check == 1 || ideaObj.fields.user_id == userId) {
                 window.location.pathname = window.location.pathname.split("nominate")[0] + 'development/';
+            }
             
-            currentIdea = ideaObj.fields.response_text;
-            document.getElementById("idea-current").innerHTML = currentIdea;
-            ideaObj.fields.check = 1
-            currentIdea = ideaObj.fields.response_text;
+            ideaObj.fields.check = 1;
+            currentIdea = ideaObj;
+            document.getElementById("idea-current").innerHTML = currentIdea.fields.response_text;
         }
         //updates the nomination parameter of the response and loads the next idea
         function nominateIdea(){
-            const idea = document.querySelector('#idea-current').innerHTML;
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },
                 url: '/upd_response/',
                 data: {
-                    response: idea,
+                    response_id: currentIdea.pk,
                     check: "nominate"
                 },
                 success: function (response) {

@@ -29,29 +29,7 @@
     background-color: #06d6a0;
 }
 #idea-container{
-    
     text-align: center;
-}
-
-#idea-one{
-    width: 500px;
-    height: 500px;
-    background-color: yellow;
-    border: solid 10px #06d6a0;
-}
-#idea-two{
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 500px;
-    height: 500px;
-    background-color: yellow;
-    border: solid 10px #06d6a0;
-}
-#idea-three{
-   width: 500px;
-   height: 500px;
-   background-color: yellow;
-   border: solid 10px #06d6a0;
 }
 #problem-description-text-center{
     text-align: center;
@@ -103,56 +81,31 @@
       inset 0 -2px 6px rgba(0,0,0,0.4);
     position: relative;
     overflow: hidden;    
-  }
+}
+.response-box{
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 500px;
+    height: 500px;
+    background-color: #f36c6d;
+    border: solid 10px #06d6a0;
+    text-align: center;
+}
   @media only screen and (max-height: 800px) {
-
-    #idea-one{
+    .response-box{
         width: 250px;
         height: 250px;
-
-    }
-    #idea-two{
-        width: 250px;
-        height: 250px;
-
-    }
-    #idea-three{
-        width: 250px;
-        height: 250px;
-
     }
 }
 @media only screen and (max-width: 1600px) {
- 
-    #idea-one{
-        width: 350px;
-        height: 350px;
-
-    }
-    #idea-two{
-        width: 350px;
-        height: 350px;
-
-    }
-    #idea-three{
+    .response-box{
         width: 350px;
         height: 350px;
     }
-
 }
 
 @media only screen and (max-height: 1000px){
- 
-    #idea-one{
-        width: 400px;
-        height: 200px;
-
-    }
-    #idea-two{
-        width: 400px;
-        height: 200px;
-    }
-    #idea-three{
+    .response-box{
         width: 400px;
         height: 200px;
     }

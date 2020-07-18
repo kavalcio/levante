@@ -10,8 +10,7 @@
 </head>
 <body>
     <h2>Develop Ideas</h2><br>
-    <div id="center-idea">
-        <input type="text" id="current-idea" >
+    <div id="current-idea">
         <br>
     </div>
     <div id="center-comment"> 
@@ -19,8 +18,8 @@
         <br>
     </div>
     <div id="buttons-below">
-        <button onclick="loadNextIdea()">Next Idea</button>
-        <button onclick="submitComment()">Submit</button>
+        <input class="button" value="Next Idea" onclick="loadNextIdea()">
+        <input class="button" value="Submit" onclick="submitComment()">
     </div>
 
     <div class="meter">
@@ -77,8 +76,8 @@
                 window.location.pathname = window.location.pathname.split("development")[0] + 'voting/';
             
             
-            currentIdea = ideaObj.fields.response_text;
-            document.getElementById("current-idea").value = currentIdea;
+            currentIdea = ideaObj;
+            document.getElementById("current-idea").innerHTML = currentIdea.fields.response_text;
             ideaObj.fields.check = 1
             $.ajax({
                 type: 'GET',
@@ -90,7 +89,8 @@
                 success: function (result) {
                     const comments = JSON.parse(result);
                     for (index in comments) {
-                        document.getElementById("current-idea").value += '\n' + comments[index];
+                        // TODO: don't just append the text, do something visually better here
+                        document.getElementById("current-idea").innerHTML += '\n' + comments[index];
                     }
                 },
             });
@@ -98,14 +98,13 @@
 
         function submitComment() {
             comment = document.getElementById("comment-text-input").value;
-            document.getElementById("current-idea").value += '\n' + comment;
-
+            document.getElementById("current-idea").innerHTML += '\n' + comment;
             $.ajax({
                 type: 'POST',
                 headers: { "X-CSRFToken": token },
                 url: '/add_comment/',
                 data: {
-                    idea: currentIdea,
+                    idea: currentIdea.pk,
                     comment: comment,
                 },
                 success: function (response) {

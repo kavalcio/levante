@@ -23,8 +23,20 @@ body{
     font-size: 50px;
     text-align: center;
 }
-#center-idea{
+.button{
+    font-size: 20px;
     text-align: center;
+    height: 40px;
+    width: 350px;
+    border-radius: 100px;
+    background-color: #06d6a0;
+    border: solid 2px #06d6a0;
+    margin: 5px;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #05a87d;
+    border: solid 2px #05a87d;
 }
 #center-comment{
     margin-top: 50px;
@@ -37,8 +49,7 @@ body{
     border: solid 12px #06d6a0;
     width: 800px;
     height: 600px;
-    font-size: 70px;
-
+    font-size: 40px;
 }
 #buttons-below{
     margin-top: 30px;
