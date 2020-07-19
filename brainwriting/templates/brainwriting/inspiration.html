@@ -16,9 +16,9 @@
             <br>
         </div>
         <div id="idea-container">
-            <input class="response-box" type="text" id="idea-one">
-            <input class="response-box" type="text" id="idea-two">
-            <input class="response-box" type="text" id="idea-three">
+            <div class="response-box" type="text" id="idea-one"></div>
+            <div class="response-box" type="text" id="idea-two"></div>
+            <div class="response-box" type="text" id="idea-three"></div>
         </div>
         <div id="check-ideas-text-center">
             <h3 id="checkideas-text">Check out some other ideas!</h3>
@@ -78,7 +78,7 @@
             // TODO: only get ideas that came from other users
             for (let i = 0; i < 3 ; i++) {
                 if (ideas[i] && ideas[i].fields.user_id != userId) {
-                    document.getElementById(ideaElements[i]).value = ideas[i].fields.response_text;
+                    document.getElementById(ideaElements[i]).innerHTML = ideas[i].fields.response_text;
                 }
             }
         }

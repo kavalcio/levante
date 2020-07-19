@@ -10,9 +10,9 @@
     <body>
         <h2>Vote For In Person Discussion!</h2><br>
         <div id="votes-center">
-            <textarea readonly id="idea-one" cols="50" rows="20" onclick="vote('one')"></textarea>
-            <textarea readonly id="idea-two" cols="50" rows="20" onclick="vote('two')"></textarea>
-            <textarea readonly id="idea-three" cols="50" rows="20" onclick="vote('three')"></textarea><br>
+            <div class="idea-container" id="idea-one" onclick="vote('one')"></div>
+            <div class="idea-container" id="idea-two" onclick="vote('two')"></div>
+            <div class="idea-container" id="idea-three" onclick="vote('three')"></div><br>
         </div>
         <div id="next-idea-button-center">
             <button onclick="loadThreeNext()"> Next Ideas</button>
@@ -60,32 +60,33 @@
                 });
             }
             function vote(ideaNum){
-                const idea = document.getElementById("idea-"+ideaNum).value
-                    $.ajax({
-                        type: 'POST',
-                        headers: { "X-CSRFToken": token },
-                        url: '/upd_response/',
-                        data: {
-                            response: idea,
-                            check: "vote"
-                        },
-                        success: function(response) {
-                            
-                        },
-                    });
-                document.getElementById("idea-"+ideaNum).value = "Voted!"
+                $.ajax({
+                    type: 'POST',
+                    headers: { "X-CSRFToken": token },
+                    url: '/upd_response/',
+                    data: {
+                        response_id: currentIdea.pk,
+                        check: "vote"
+                    },
+                    success: function(response) {
+                        
+                    },
+                });
+                document.getElementById("idea-"+ideaNum).innerHTML = "Voted!"
             }
 
             function loadNextIdea(ideaNum, firstRun) {
-                const idea = document.getElementById("idea-"+ideaNum).value
+                const idea = document.getElementById("idea-"+ideaNum).innerHTML;
                 const roomId = localStorage.getItem('roomId');
-                if (document.getElementById("idea-"+ideaNum).value != "Voted!" && !firstRun && document.getElementById("idea-"+ideaNum).value != ""){
+                currentIdea = ideas[count];
+                document.getElementById("idea-"+ideaNum).innerHTML = currentIdea.fields.response_text;
+                if (document.getElementById("idea-"+ideaNum).innerHTML != "Voted!" && !firstRun && document.getElementById("idea-"+ideaNum).innerHTML != ""){
                     $.ajax({
                         type: 'POST',
                         headers: { "X-CSRFToken": token },
                         url: '/upd_response/',
                         data: {
-                            response: idea
+                            response_id: currentIdea.pk,
                         },
                         success: function(response) {
                             if(count == ideas.length)
@@ -93,10 +94,7 @@
                         },
                     });  
                 }
-                if(count == ideas.length)
-                    window.location.pathname = window.location.pathname.split("voting")[0] + 'end/';
-                currentIdea = ideas[count].fields.response_text;
-                document.getElementById("idea-"+ideaNum).value = currentIdea;
+                
                 // $.ajax({
                 //     type: 'GET',
                 //     headers: { "X-CSRFToken": token },
