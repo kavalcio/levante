@@ -7,7 +7,7 @@ body{
     background-color: #073b4c;
     overflow: hidden;
 }
-#problem-description{
+/* #problem-description{
     font-size: 40px;
     display: block;
     margin: auto;
@@ -16,7 +16,7 @@ body{
     width: 90%;
     height: fit-content;
     background-color: #06d6a0;
-}
+} */
 #ideas{
     margin-top: 3000 / 2;
     text-align: center;

@@ -4,12 +4,13 @@
         <head>
             <meta charset="utf-8"/>
             <title>End Page - levanté!</title>
+            <link rel="stylesheet" href="{% static 'style.css' %}">
             <link rel="stylesheet" href="{% static 'end.css' %}">
     </head>
     </head>
     <body>
         <h2 id="center-header">All done! Here is your list of ideas: </h2><br>
-        <div id="problem-description" type="text" size="100"></div><br>
+        <div id="problem-description" class="problem-description" type="text" size="100"></div><br>
         <div id="center-ideas">
             <textarea readonly id="ideas" cols="50" rows="20">
             </textarea>

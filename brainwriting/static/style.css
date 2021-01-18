@@ -7,85 +7,48 @@ header{
 display: inline;
 float: left;
 margin: auto;
-
 }
-.ideaContainer0{
-  width: 17%;
-  height: 500px;
-  float: left;
-  margin:2%;
-  border-style: solid;
-  border-width: 5px;
+
+.main-container{
+  margin-top: 30px;
+  display: block;
+  width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo-title{
+  margin: auto;
+  width: 350px;
+  height: auto;
+  display: block;
+}
+
+.page-instructions{
+  font-size: 30px;
+  margin: 20px;
+  font-style: italic;
+  color: #8be8cb;
+}
+
+.problem-description{
+  font-size: 30px;
+  display: block;
+  margin: auto;
+  border: solid 2px  #06d6a0;
   text-align: center;
+  width: 90%;
+  height: fit-content;
+  background-color: #06d6a0;
+  border-radius: 10px;
+  margin-top: 15px;
+  color: #000933;
 }
 
-.ideaContainer1{
-  width: 20%;
-  height: 700px;
-  float: left;
-  margin-top: 250px;
-  margin-left: 100px;
-  border-style: solid;
-  border-width: 5px;
-  text-align: center;
-}
-
-
-.ideaContainer2{
-  width: 20%;
-  height: 700px;
-  float: left;
-  margin-top: 250px;
-  margin-left: 100px;
-  margin-right: 100px;
-  border-style: solid;
-  border-width: 5px;
-  text-align: center;
-}
-
-
-.ideaContainer3{
-  width: 17%;
-  height: 500px;
-  float: left;
-  margin:2%;
-  border-style: solid;
-  border-width: 5px;
-  text-align: center;
-
-}
-
-.timer{
+/* .timer{
   margin-top:100px;
   margin-right: 48.5%;
   float: right;
   border-style: solid;
   border-width: 5px;
-}
-
-.ideaButton{
-  margin-right: 50%;
-  float: right;
-}
-
-.keyID {
-  margin-bottom: 50%;
-  margin-right: 50%;
-  float: right;
-
-}
-
-.ideaBox{
-  width: 20%;
-  height: 700px;
-  margin: auto;
-  border-style: solid;
-  border-width: 5px;
-  text-align: center;
-
-}
-
-.submitIdeaButton{
-  margin-top: 50px;
-  margin-left: 48.8%;
-}
+} */

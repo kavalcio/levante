@@ -45,10 +45,11 @@ body{
 
 #current-idea{
     text-align: center;
-    background-color: #ef476f;
-    border: solid 12px #06d6a0;
-    width: 800px;
-    height: 600px;
+    background-color: #dc758f;
+    border: solid 12px #8be8cb;
+    /* width: 800px; */
+    width: 90%;
+    height: 300px;
     font-size: 40px;
 }
 #buttons-below{
@@ -76,10 +77,10 @@ body{
 
 
 }
-.meter{
+/* .meter{
     width: 90%;
     margin-top: 50px;
-    height: 40px;  /* Can be anything */
+    height: 40px;
 	position: relative;
     padding: 10px;
     margin-left: 5%;
@@ -101,10 +102,10 @@ body{
     overflow: hidden;    
   }
 
-  @media only screen and (max-height: 1000px){
-    
-      #current-idea{
-          width: 800px;
-          height: 300px;
-      }
-  }
+@media only screen and (max-height: 1000px){
+
+    #current-idea{
+        width: 800px;
+        height: 300px;
+    }
+} */

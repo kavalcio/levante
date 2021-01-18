@@ -10,15 +10,7 @@
     background-color: #073b4c;
     overflow: hidden;
 }
-
-#main-container{
-    margin-top: 30px;
-    text-align: center;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
-#problem-description{
+/* #problem-description{
     font-size: 40px;
     display: block;
     margin: auto;
@@ -27,7 +19,8 @@
     width: 90%;
     height: fit-content;
     background-color: #06d6a0;
-}
+    border-radius: 10px;
+} */
 #idea-container{
     text-align: center;
 }
@@ -38,7 +31,7 @@
     text-align: center;
 }
 #checkideas-text{
-    margin-top: 90px;
+    margin-top: 50px;
     text-align: center;
     font-size: xx-large;
 }
@@ -84,11 +77,11 @@
 }
 .response-box{
     display: inline-block;
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 300px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
+    width: 30%;
     height: 200px;
-    background-color: #f36c6d;
-    border: solid 10px #06d6a0;
+    background-color: #dc758f;
+    border: solid 10px #8be8cb;
     text-align: center;
 }

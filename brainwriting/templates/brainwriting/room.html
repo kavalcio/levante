@@ -5,29 +5,36 @@
 <head>
     <meta charset="utf-8" />
     <title>Brain Room - levanté!</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'room.css' %}">
 </head>
 <body>
-    <div id="main-container">
+    <div class="main-container">
+        <img class='logo-title' src="{%  static 'images/logo-title.png' %}" alt="">
+        
         <div
             id="problem-description"
+            class="problem-description"
             type="text"
             size="100"
         >
         </div>
-        <br>
+        <div id="check-ideas-text-center">
+            <div class="page-instructions">Come up with ideas!</div>
+        </div>
+        <!-- <br> -->
         <input id="message-input" type="text" size="100" value="Type your ideas here!" onclick='clearText()'><br>
-        <input id="message-submit" type="button" value="Press Enter to Save"><br>
+        <input id="message-submit" class="button" type="button" value="Press Enter to Submit"><br>
 
+
+        <div id="timer-center">
+            You have <span id="time">30</span> seconds!
+        </div>
+
+        {{ room_name|json_script:"room-name" }}
+        {{ user_name|json_script:"user-name" }}
+        {{ room_num|json_script:"room-num" }}
     </div>
-
-    <div id="timer-center">
-        You have <span id="time">30</span> seconds!
-    </div>
-
-    {{ room_name|json_script:"room-name" }}
-    {{ user_name|json_script:"user-name" }}
-    {{ room_num|json_script:"room-num" }}
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -111,6 +118,7 @@
 
         window.onload = function () {
             display = document.querySelector('#time');
+            // TODO: replace with 30
             startTimer(30, display); //switch to 120 seconds
         };
     </script>

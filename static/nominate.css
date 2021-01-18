@@ -13,7 +13,7 @@ body{
     background-color:#073b4c ;
     overflow: hidden;
 }
-#main-container{
+/* #main-container{
     background-color: #ef476f;
     width: 1400px;
     height: 400px;
@@ -29,7 +29,7 @@ body{
     vertical-align: middle;
     align-content: center;
     border: solid 10px #06d6a0;
-    }
+    } */
 #left-button{
     height: 300px;
     float: left;

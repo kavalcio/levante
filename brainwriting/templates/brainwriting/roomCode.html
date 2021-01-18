@@ -5,25 +5,31 @@
 <head>
     <meta charset="utf-8" />
     <title>Room Code - levanté!</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'roomCode.css' %}">
     <!-- TODO: get this import working -->
     <!-- <script src="../../static/helpers/RoomHelpers.js" type="text/javascript"></script> -->
 </head>
 
 <body>
-    <div id="main-container">
-
-        <img id="logo-image" src="{%  static 'images/logo.png' %}" alt="">
+    <div class="main-container">
+        <img class='logo-title' src="{%  static 'images/logo-title.png' %}" alt="">
+        <!-- <img id="logo-image" src="{%  static 'images/logo.png' %}" alt=""> -->
         <div id="sub-container">
-            <h3 id="key-share">Your Key to Share</h3>
+            <div id="key-share">Your Key to Share</div>
 
-            <input type="text" value="room code" id="room-code" onclick="copyFunction()"><br>
-
+            <input type="text" value="room code" id="room-code" onclick="copyFunction()" readonly><br>
             {{ room_name|json_script:"room-name" }}
+
+            <div class="room-counter">
+                3 people in room
+            </div>
         </div>
 
+        
+
         <div id="enter-room-center">
-            <input id="join-room" type="button" value="Enter Room"">
+            <input id="join-room" type="button" value="Start Session">
         </div>
 
     </div>
@@ -50,7 +56,7 @@
             document.execCommand('copy');
 
             /* Alert the copied text */
-            alert("Copied link: " + copyText.value);
+            alert("Copied link: " + copyText.innerHTML);
         }
         function joinRoom(roomKey) {
             $.ajax({
